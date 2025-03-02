@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header with expiry -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:padding="12dp"
+            android:orientation="horizontal">
+
+            <!-- Trạng thái voucher -->
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chưa sử dụng"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:visibility="gone"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/tvExpiry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HSD: 31/12/2024"
+                android:textColor="@color/white"
+                android:alpha="0.8"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+        <!-- Content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <!-- Left part (Discount info) -->
+            <LinearLayout
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/bg_voucher_amount"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvDiscountAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="50K"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="24sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="GIẢM"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+            <!-- Right part (Details) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Giảm 50K cho đơn từ 500K"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="?android:textColorPrimary"/>
+
+                <!-- Layout chứa mã voucher -->
+                <LinearLayout
+                    android:id="@+id/codeContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_voucher_code"
+                    android:padding="8dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mã voucher:"
+                        android:textSize="12sp"
+                        android:textColor="@color/gray"/>
+
+                    <TextView
+                        android:id="@+id/tvCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CODE123"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:layout_marginTop="4dp"
+                        android:textColor="?attr/colorPrimary"/>
+
+                </LinearLayout>
+
+                <!-- Điểm cần để đổi (chỉ hiện khi chưa đổi) -->
+                <TextView
+                    android:id="@+id/tvPointsRequired"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="500 điểm"
+                    android:textColor="@color/gray"
+                    android:textSize="14sp"
+                    android:drawableStart="@drawable/ic_point"
+                    android:drawablePadding="4dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRedeem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Đổi voucher"
+                    android:textSize="14sp"
+                    app:cornerRadius="8dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

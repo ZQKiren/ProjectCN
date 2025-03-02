@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Image Slider -->
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPagerProductImages"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:clipToPadding="false"
+            android:clipChildren="false"/>
+
+        <!-- Product Info Card -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-24dp"
+            android:layout_marginHorizontal="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Category -->
+                <TextView
+                    android:id="@+id/tvProductCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Danh mục"
+                    android:textColor="@color/primary"
+                    android:textSize="14sp"
+                    android:background="@drawable/category_background"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="4dp"/>
+
+                <!-- Product Name -->
+                <TextView
+                    android:id="@+id/tvProductName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Tên sản phẩm"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"/>
+
+                <!-- Price Section -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tvProductPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="900.000đ"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary"/>
+
+                    <TextView
+                        android:id="@+id/tvProductOriginalPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1.000.000đ"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_secondary"
+                        android:layout_marginStart="12dp" />
+
+                    <TextView
+                        android:id="@+id/tvProductOffer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-10%"
+                        android:textColor="@color/white"
+                        android:background="@drawable/offer_background"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="4dp"
+                        android:layout_marginStart="12dp"/>
+                </LinearLayout>
+
+                <!-- Description -->
+                <TextView
+                    android:id="@+id/tvProductDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_secondary" />
+
+                <!-- Size & Color Section -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="16dp">
+
+                    <TextView
+                        android:id="@+id/tvProductSizes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_size"
+                        android:drawablePadding="8dp"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/text_primary"/>
+
+                    <TextView
+                        android:id="@+id/tvProductColors"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:drawableStart="@drawable/ic_color"
+                        android:drawablePadding="8dp"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/text_primary"/>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Action Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddToFavorite"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                app:icon="@drawable/ic_favorite"
+                app:iconTint="@color/text_secondary"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:strokeColor="@color/text_secondary"
+                app:cornerRadius="8dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddToCart"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="Thêm vào giỏ hàng"
+                android:textAllCaps="false"
+                android:layout_marginStart="12dp"
+                app:cornerRadius="8dp"/>
+        </LinearLayout>
+
+        <!-- Reviews Section -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Rating Header -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvAverageRating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="4.5/5.0"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary"/>
+
+                        <RatingBar
+                            android:id="@+id/ratingBarAverage"
+                            style="?android:attr/ratingBarStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:numStars="5"
+                            android:stepSize="0.5"
+                            android:isIndicator="true"/>
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Viết đánh giá"
+                        android:textAllCaps="false"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+                </LinearLayout>
+
+                <!-- Write Review Section -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="16dp">
+
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:numStars="5"
+                        android:stepSize="0.5"
+                        android:layout_gravity="center_horizontal"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etReviewComment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Nhập nhận xét của bạn..."
+                            android:minLines="3"
+                            android:gravity="top"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Media Preview -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:id="@+id/imgAddMedia"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_attach"
+                            android:padding="12dp"
+                            android:background="@drawable/circle_background"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerViewMediaPreview"
+                            android:layout_width="0dp"
+                            android:layout_height="80dp"
+                            android:layout_weight="1"
+                            android:layout_marginStart="8dp"/>
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSubmitReview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Gửi đánh giá"
+                        android:textAllCaps="false"
+                        android:layout_marginTop="16dp"
+                        app:cornerRadius="8dp"/>
+                </LinearLayout>
+
+                <!-- Reviews List -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewReviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:nestedScrollingEnabled="false"/>
+
+                <ProgressBar
+                    android:id="@+id/progressBarLoading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>

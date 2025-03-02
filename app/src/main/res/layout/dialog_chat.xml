@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="400dp"
+    android:orientation="vertical"
+    android:background="@drawable/bg_bottom_sheet">
+
+    <!-- Header -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/chat_support"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"/>
+
+        <ImageButton
+            android:id="@+id/btn_close"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_close"
+            android:contentDescription="@string/close"
+            android:padding="12dp"
+            app:tint="@color/text_secondary"/>
+    </RelativeLayout>
+
+    <!-- Chat Messages -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_chat"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp"
+        android:clipToPadding="false"
+        tools:listitem="@layout/item_chat_user"/>
+
+    <!-- Input Area -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/edit_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/type_message"
+            android:padding="12dp"
+            android:background="@drawable/bg_chat_input"
+            android:maxLines="4"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_send"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@string/send_message"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            app:icon="@drawable/ic_send"
+            app:iconTint="@color/primary"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:cornerRadius="24dp"/>
+    </LinearLayout>
+
+</LinearLayout>

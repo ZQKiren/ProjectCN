@@ -1,0 +1,136 @@
+<resources>
+    <string name="app_name">IvyModa</string>
+    <string name="app_logo_description">Logo của ứng dụng</string>
+
+    <string name="login">Đăng nhập</string>
+    <string name="app_logo">App Logo</string>
+    <string name="app_slogan">Your Shopping Companion</string>
+    <string name="version">Version 1.0.0</string>
+    <string name="background" />
+    <string name="gentle">Giới tính</string>
+
+    <string name="save_info">Lưu thông tin</string>
+    <string name="change_avatar">Thay đổi ảnh đại diện</string>
+
+    <string name="product_price">Giá: %,.2f đ</string>
+    <string name="product_offer">Khuyến mãi: %1$d%%</string>
+
+    <string name="product_image_description">Hình ảnh sản phẩm</string>
+
+    <string name="customer_info">Thông tin khách hàng</string>
+    <string name="name">Họ tên</string>
+    <string name="phone">Số điện thoại</string>
+    <string name="shipping_address">Địa chỉ giao hàng</string>
+    <string name="enter_shipping_address">Nhập địa chỉ giao hàng</string>
+    <string name="cart_items">Sản phẩm trong giỏ hàng</string>
+    <string name="payment_method">Phương thức thanh toán</string>
+    <string name="cash_on_delivery">Thanh toán khi nhận hàng (COD)</string>
+    <string name="vnpay_wallet">Ví điện tử VnPay</string>
+    <string name="momo_wallet">Ví điện tử MoMo</string>
+    <string name="place_order">Đặt hàng</string>
+
+    <string name="product_image">Product Image</string>
+    <string name="get_current_location" />
+
+    <string name="edit_user">Sửa thông tin người dùng</string>
+    <string name="delete_user">Xóa người dùng</string>
+    <string name="status_active">Hoạt động</string>
+    <string name="logout_confirmation_title" />
+    <string name="logout_confirmation_message" />
+    <string name="yes" />
+    <string name="no" />
+    <!-- Google -->
+    <string name="default_web_client_id">298122410957-8v4dnd44qgv07o4pv1qjgg3aoqvh9uag.apps.googleusercontent.com</string>
+    <string name="loading">Đang tải…</string>
+    <string name="register">Đăng ký</string>
+    <!-- Sign up -->
+    <string name="create_account">Create Account</string>
+    <string name="full_name">Full Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="terms_and_privacy">By signing up, you agree to our Terms of Service and Privacy Policy</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="sign_in">Sign In</string>
+    <!-- Forgot -->
+    <string name="forgot_password_title">Quên mật khẩu</string>
+    <string name="reset_password">Đặt lại mật khẩu</string>
+    <string name="reset_password_description">Nhập địa chỉ email của bạn để nhận link đặt lại mật khẩu</string>
+    <string name="send_reset_link">Gửi link đặt lại</string>
+    <string name="remember_password">Đã nhớ mật khẩu? </string>
+    <string name="success_reset_email_sent">Email đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư.</string>
+    <string name="error_reset_password">Không thể gửi email đặt lại: %1$s</string>
+    <string name="error_email_not_found">Email không tồn tại trong hệ thống</string>
+    <!-- Input Validation -->
+    <string name="error_field_required">Trường này không được để trống</string>
+    <string name="error_invalid_email">Vui lòng nhập email hợp lệ</string>
+    <string name="error_password_length">Mật khẩu phải có ít nhất 6 ký tự</string>
+    <string name="error_passwords_not_match">Mật khẩu không khớp</string>
+    <!-- Common -->
+    <string name="welcome">Chào mừng đến IvyModa</string>
+    <string name="error_unknown">Đã xảy ra lỗi không xác định</string>
+    <!-- Bottom Navigation -->
+    <string name="home">Trang chủ</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="cart">Giỏ hàng</string>
+    <string name="profile">Cá nhân</string>
+    <string name="admin">Quản trị</string>
+    <!-- Cart Item Accessibility -->
+    <string name="decrease_quantity">Giảm số lượng</string>
+    <string name="increase_quantity">Tăng số lượng</string>
+    <string name="remove_from_cart">Xóa khỏi giỏ hàng</string>
+
+    <string name="chat_with_bot">Trò chuyện với bot</string>
+    <string name="type_message">Nhập tin nhắn…</string>
+    <string name="send_message">Gửi tin nhắn</string>
+    <string name="chat_support">Chat hỗ trợ</string>
+    <string name="close">Đóng</string>
+
+    <string name="manage_accounts">Quản lý tài khoản</string>
+    <string name="search_hint">Tìm kiếm tài khoản…</string>
+    <string name="total_users">Tổng người dùng</string>
+    <string name="active_users">Đang hoạt động</string>
+
+    <string name="facebook_app_id">1669224917360486</string>
+    <string name="fb_login_protocol_scheme">fb1669224917360486</string>
+    <string name="facebook_client_token">b04e7dbdbacbc83ed7e992c7a9ef5522</string>
+
+    <!-- Edit Profile Strings -->
+    <string name="edit_profile_title">Chỉnh sửa thông tin</string>
+    <string name="hint_full_name">Họ và tên</string>
+    <string name="hint_phone">Số điện thoại</string>
+    <string name="hint_gender">Giới tính</string>
+    <string name="btn_save">Lưu thông tin</string>
+    <string name="avatar_description">Ảnh đại diện của bạn</string>
+    <string name="camera_icon_description">Chọn ảnh</string>
+
+    <string-array name="gender_options">
+        <item>Nam</item>
+        <item>Nữ</item>
+        <item>Khác</item>
+    </string-array>
+
+    <string-array name="order_status">
+        <item>Chờ xác nhận</item>
+        <item>Đã xác nhận</item>
+        <item>Đang xử lý</item>
+        <item>Đang giao hàng</item>
+        <item>Đã giao hàng</item>
+        <item>Đã hủy</item>
+        <item>Trả hàng/Hoàn tiền</item>
+    </string-array>
+
+    <string name="order_id_prefix">Mã đơn hàng: #%s</string>
+    <string name="order_status_prefix">Trạng thái: %s</string>
+    <string name="order_time_prefix">Thời gian: %s</string>
+    <string name="customer_name_prefix">Người nhận: %s</string>
+    <string name="customer_phone_prefix">SĐT: %s</string>
+    <string name="shipping_address_prefix">Địa chỉ: %s</string>
+    <string name="payment_method_prefix">Phương thức: %s</string>
+
+    <string name="order_id_label">Mã đơn hàng</string>
+    <string name="order_date_label">Ngày đặt hàng</string>
+    <string name="total_amount_label">Tổng tiền</string>
+
+    <string name="manage_vouchers">Quản lý voucher</string>
+</resources>

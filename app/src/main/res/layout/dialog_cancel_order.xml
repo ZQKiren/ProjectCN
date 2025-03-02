@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <RadioGroup
+        android:id="@+id/rgCancelReasons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/rbReason1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thay đổi ý định mua hàng"
+            android:padding="8dp"/>
+
+        <RadioButton
+            android:id="@+id/rbReason2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đặt trùng đơn hàng"
+            android:padding="8dp"/>
+
+        <RadioButton
+            android:id="@+id/rbReason3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Muốn thay đổi sản phẩm"
+            android:padding="8dp"/>
+
+        <RadioButton
+            android:id="@+id/rbReason4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thời gian giao hàng quá lâu"
+            android:padding="8dp"/>
+
+        <RadioButton
+            android:id="@+id/rbReasonOther"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lý do khác"
+            android:padding="8dp"/>
+    </RadioGroup>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilOtherReason"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:visibility="gone">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etOtherReason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập lý do khác"
+            android:maxLines="3"/>
+    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>

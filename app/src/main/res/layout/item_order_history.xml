@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Mã đơn hàng -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingBottom="8dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_order"
+                android:contentDescription="@string/order_id_label"
+                app:tint="?attr/colorPrimary"/>
+
+            <TextView
+                android:id="@+id/tvOrderId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Mã đơn: 12345"
+                android:textSize="16sp"
+                android:layout_marginStart="8dp"
+                android:textColor="?android:textColorPrimary"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvOrderStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thành công"
+                android:textSize="14sp"
+                android:padding="4dp"
+                android:background="@drawable/bg_status"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+
+        <!-- Ngày đặt hàng -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingBottom="8dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_date"
+                android:contentDescription="@string/order_date_label"
+                app:tint="?attr/colorPrimary"/>
+
+            <TextView
+                android:id="@+id/tvOrderDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ngày: 01/01/2023"
+                android:textSize="14sp"
+                android:layout_marginStart="8dp"
+                android:textColor="?android:textColorSecondary"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:listDivider"
+            android:layout_marginVertical="8dp"/>
+
+        <!-- Tổng tiền -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_total"
+                android:contentDescription="@string/total_amount_label"
+                app:tint="?attr/colorPrimary"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tổng tiền:"
+                android:textSize="14sp"
+                android:layout_marginStart="8dp"
+                android:textColor="?android:textColorSecondary"/>
+
+            <TextView
+                android:id="@+id/tvOrderTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100,000đ"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="?attr/colorPrimary"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Hủy đơn"
+            android:visibility="gone"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:textColor="@color/status_cancelled"/>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
