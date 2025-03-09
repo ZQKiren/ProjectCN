@@ -1,5 +1,5 @@
 [versions]
-agp = "8.8.1"
+agp = "8.8.2"
 
 facebookLogin = "latest.release"
 glide = "4.12.0"
@@ -9,23 +9,21 @@ espressoCore = "3.6.1"
 appcompat = "1.7.0"
 lottie = "6.6.0"
 material = "1.12.0"
-activity = "1.9.3"
-constraintlayout = "2.2.0"
+activity = "1.10.1"
+constraintlayout = "2.2.1"
 
 picasso = "2.71828"
 
 playServicesAuthVersion = "21.3.0"
 playServicesIdentity = "18.1.0"
 playServicesLocation = "21.3.0"
-playServicesMaps = "19.0.0"
+playServicesMaps = "19.1.0"
 
 googleGmsGoogleServices = "4.4.2"
-firebaseAuth = "23.1.0"
-firebaseFirestore = "25.1.1"
+firebaseAuth = "23.2.0"
+firebaseFirestore = "25.1.2"
 firebaseStorageVersion = "21.0.1"
 viewpager2 = "1.1.0"
-zalopaySdk = "2.0.0"
-zpdk = "2.0.2"
 
 [libraries]
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
@@ -53,8 +51,6 @@ firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorageVersion" }
 
 viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
-zalopay-sdk = { module = "vn.zalopay.sdk:zalopay-sdk", version.ref = "zalopaySdk" }
-zpdk = { module = "vn.zalopay.sdk:zpdk", version.ref = "zpdk" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
