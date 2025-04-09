@@ -88,7 +88,6 @@ public class ManageAccountsFragment extends Fragment implements ManageAccountsAd
         adapter.notifyDataSetChanged();
     }
 
-    // Thêm phương thức mới này
     private int countActiveUsers(List<User> users) {
         int count = 0;
         for (User user : users) {
@@ -135,7 +134,7 @@ public class ManageAccountsFragment extends Fragment implements ManageAccountsAd
     @Override
     public void onUserAction(User user, String action) {
         if ("update".equals(action)) {
-            // Xử lý cập nhật thông tin cơ bản (nếu cần)
+            // Xử lý cập nhật thông tin cơ bản nếu cần - không còn cần thiết vì adapter tự xử lý
         } else if ("delete".equals(action)) {
             deleteUser(user);
         }
@@ -157,6 +156,40 @@ public class ManageAccountsFragment extends Fragment implements ManageAccountsAd
         showError("Không thể cập nhật quyền: " + e.getMessage());
     }
 
+    @Override
+    public void onUserUpdateSuccess(User user) {
+        int position = findUserPosition(user);
+        if (position != -1) {
+            userList.get(position).setFullName(user.getFullName());
+            userList.get(position).setPhoneNumber(user.getPhoneNumber());
+            userList.get(position).setGender(user.getGender());
+            userList.get(position).setStatus(user.getStatus());
+            userList.get(position).setPoints(user.getPoints());
+
+            // Update the filtered list too if needed
+            int filteredPosition = findUserPositionInFiltered(user);
+            if (filteredPosition != -1) {
+                filteredUsers.get(filteredPosition).setFullName(user.getFullName());
+                filteredUsers.get(filteredPosition).setPhoneNumber(user.getPhoneNumber());
+                filteredUsers.get(filteredPosition).setGender(user.getGender());
+                filteredUsers.get(filteredPosition).setStatus(user.getStatus());
+                filteredUsers.get(filteredPosition).setPoints(user.getPoints());
+            }
+
+            // Update the adapter and stats
+            adapter.notifyDataSetChanged();
+            int activeCount = countActiveUsers(filteredUsers);
+            updateStats(filteredUsers.size(), activeCount);
+
+            showSuccess("Đã cập nhật thông tin cho " + user.getFullName());
+        }
+    }
+
+    @Override
+    public void onUserUpdateFailure(Exception e) {
+        showError("Không thể cập nhật thông tin: " + e.getMessage());
+    }
+
     private void deleteUser(User user) {
         db.collection("users").document(user.getId())
                 .delete()
@@ -164,8 +197,15 @@ public class ManageAccountsFragment extends Fragment implements ManageAccountsAd
                     int position = findUserPosition(user);
                     if (position != -1) {
                         userList.remove(position);
-                        adapter.notifyItemRemoved(position);
-                        updateStats(userList.size(), countActiveUsers());
+
+                        // Also remove from filtered list if present
+                        int filteredPosition = findUserPositionInFiltered(user);
+                        if (filteredPosition != -1) {
+                            filteredUsers.remove(filteredPosition);
+                        }
+
+                        adapter.notifyDataSetChanged();
+                        updateStats(filteredUsers.size(), countActiveUsers(filteredUsers));
                         showSuccess("Đã xóa người dùng thành công");
                     }
                 })
@@ -175,6 +215,15 @@ public class ManageAccountsFragment extends Fragment implements ManageAccountsAd
     private int findUserPosition(User user) {
         for (int i = 0; i < userList.size(); i++) {
             if (userList.get(i).getId().equals(user.getId())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private int findUserPositionInFiltered(User user) {
+        for (int i = 0; i < filteredUsers.size(); i++) {
+            if (filteredUsers.get(i).getId().equals(user.getId())) {
                 return i;
             }
         }

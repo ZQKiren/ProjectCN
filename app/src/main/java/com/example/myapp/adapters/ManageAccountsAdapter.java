@@ -1,11 +1,14 @@
 package com.example.myapp.adapters;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,9 +21,11 @@ import com.bumptech.glide.Glide;
 import com.example.myapp.R;
 import com.example.myapp.data.User;
 import com.example.myapp.fragments.UserDetailFragment;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ManageAccountsAdapter extends RecyclerView.Adapter<ManageAccountsAdapter.UserViewHolder> {
 
@@ -32,6 +37,8 @@ public class ManageAccountsAdapter extends RecyclerView.Adapter<ManageAccountsAd
         void onUserAction(User user, String action);
         void onRoleUpdateSuccess(User user);
         void onRoleUpdateFailure(Exception e);
+        void onUserUpdateSuccess(User user);
+        void onUserUpdateFailure(Exception e);
     }
 
     public ManageAccountsAdapter(List<User> users, UserActionListener actionListener) {
@@ -57,8 +64,8 @@ public class ManageAccountsAdapter extends RecyclerView.Adapter<ManageAccountsAd
             FragmentManager fragmentManager = ((FragmentActivity) holder.itemView.getContext()).getSupportFragmentManager();
             UserDetailFragment fragment = UserDetailFragment.newInstance(user.getId());
             fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame, fragment) // `fragment_container` là ID của container trong Activity
-                    .addToBackStack(null) // Để người dùng có thể quay lại
+                    .replace(R.id.content_frame, fragment)
+                    .addToBackStack(null)
                     .commit();
         });
     }
@@ -91,11 +98,11 @@ public class ManageAccountsAdapter extends RecyclerView.Adapter<ManageAccountsAd
                 public boolean onTouch(View v, MotionEvent event) {
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
-                            itemView.setBackgroundColor(Color.LTGRAY); // Đặt màu xám khi giữ
+                            itemView.setBackgroundColor(Color.LTGRAY);
                             break;
                         case MotionEvent.ACTION_UP:
                         case MotionEvent.ACTION_CANCEL:
-                            itemView.setBackgroundColor(Color.TRANSPARENT); // Khôi phục màu khi nhả
+                            itemView.setBackgroundColor(Color.TRANSPARENT);
                             break;
                     }
                     return false;
@@ -111,13 +118,112 @@ public class ManageAccountsAdapter extends RecyclerView.Adapter<ManageAccountsAd
                         if (which == 0) {
                             showRoleUpdateDialog(user);
                         } else if (which == 1) {
-                            actionListener.onUserAction(user, "update");
+                            showEditUserDialog(user);
                         } else if (which == 2) {
                             actionListener.onUserAction(user, "delete");
                         }
                     })
                     .setNeutralButton("Hủy", (dialog, which) -> dialog.dismiss())
                     .show();
+        }
+
+        private void showEditUserDialog(User user) {
+            Context context = itemView.getContext();
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View dialogView = inflater.inflate(R.layout.dialog_edit_user, null);
+            builder.setView(dialogView);
+
+            // Initialize form fields
+            TextInputEditText editFullName = dialogView.findViewById(R.id.edit_full_name);
+            TextInputEditText editEmail = dialogView.findViewById(R.id.edit_email);
+            TextInputEditText editPhone = dialogView.findViewById(R.id.edit_phone);
+            TextInputEditText editPoints = dialogView.findViewById(R.id.edit_points);
+            RadioGroup genderRadioGroup = dialogView.findViewById(R.id.gender_radio_group);
+            RadioGroup statusRadioGroup = dialogView.findViewById(R.id.status_radio_group);
+            RadioButton radioMale = dialogView.findViewById(R.id.radio_male);
+            RadioButton radioFemale = dialogView.findViewById(R.id.radio_female);
+            RadioButton radioActive = dialogView.findViewById(R.id.radio_active);
+            RadioButton radioInactive = dialogView.findViewById(R.id.radio_inactive);
+
+            // Set existing user data to form fields
+            editFullName.setText(user.getFullName());
+            editEmail.setText(user.getEmail());
+            editPhone.setText(user.getPhoneNumber());
+            editPoints.setText(String.valueOf(user.getPoints()));
+
+            // Set gender selection
+            if ("male".equalsIgnoreCase(user.getGender())) {
+                radioMale.setChecked(true);
+            } else if ("female".equalsIgnoreCase(user.getGender())) {
+                radioFemale.setChecked(true);
+            }
+
+            // Set status selection
+            if ("online".equals(user.getStatus())) {
+                radioActive.setChecked(true);
+            } else {
+                radioInactive.setChecked(true);
+            }
+
+            builder.setPositiveButton("Lưu", null); // We'll set this later to prevent auto-dismiss
+            builder.setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss());
+
+            AlertDialog dialog = builder.create();
+
+            // Show dialog
+            dialog.show();
+
+            // Override the positive button click to validate before dismissing
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+                // Validate form data
+                String fullName = Objects.requireNonNull(editFullName.getText()).toString().trim();
+                if (fullName.isEmpty()) {
+                    editFullName.setError("Vui lòng nhập họ tên");
+                    return;
+                }
+
+                // Get form values
+                String phoneNumber = Objects.requireNonNull(editPhone.getText()).toString().trim();
+                String pointsStr = Objects.requireNonNull(editPoints.getText()).toString().trim();
+                int points = pointsStr.isEmpty() ? 0 : Integer.parseInt(pointsStr);
+
+                String gender = radioMale.isChecked() ? "male" : "female";
+                String status = radioActive.isChecked() ? "online" : "offline";
+
+                // Create updated user object
+                user.setFullName(fullName);
+                user.setPhoneNumber(phoneNumber);
+                user.setGender(gender);
+                user.setStatus(status);
+                user.setPoints(points);
+
+                // Update user in Firestore
+                updateUserInFirestore(user, dialog);
+            });
+        }
+
+        private void updateUserInFirestore(User user, AlertDialog dialog) {
+            db.collection("users").document(user.getId())
+                    .update(
+                            "fullName", user.getFullName(),
+                            "phoneNumber", user.getPhoneNumber(),
+                            "gender", user.getGender(),
+                            "status", user.getStatus(),
+                            "points", user.getPoints()
+                    )
+                    .addOnSuccessListener(aVoid -> {
+                        dialog.dismiss();
+                        actionListener.onUserUpdateSuccess(user);
+                        Toast.makeText(itemView.getContext(),
+                                "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        actionListener.onUserUpdateFailure(e);
+                        Toast.makeText(itemView.getContext(),
+                                "Lỗi khi cập nhật thông tin: " + e.getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    });
         }
 
         private void showRoleUpdateDialog(User user) {
@@ -147,17 +253,12 @@ public class ManageAccountsAdapter extends RecyclerView.Adapter<ManageAccountsAd
         }
 
         private String getRoleDisplayName(User.Role role) {
-            switch (role) {
-                case ADMIN:
-                    return "Quản trị viên";
-                case EDITOR:
-                    return "Biên tập viên";
-                case VIEWER:
-                    return "Người xem";
-                case USER:
-                default:
-                    return "Người dùng";
-            }
+            return switch (role) {
+                case ADMIN -> "Quản trị viên";
+                case EDITOR -> "Biên tập viên";
+                case VIEWER -> "Người xem";
+                default -> "Người dùng";
+            };
         }
 
         private void updateUserRole(User user, User.Role newRole) {
