@@ -1,7 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Dark theme colors -->
     <style name="Base.Theme.MyApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <!-- Primary brand colors -->
+        <item name="colorPrimary">@color/primary_dark_theme</item>
+        <item name="colorPrimaryDark">@color/primary_dark_dark</item>
+        <item name="primaryColor">@color/primaryColor_dark</item>
+        <item name="colorAccent">@color/accent_color_dark</item>
+        <item name="colorPrimaryVariant">@color/primary_dark_theme</item>
+
+        <!-- Secondary colors -->
+        <item name="colorSecondary">@color/secondary_dark</item>
+        <item name="colorSecondaryVariant">@color/secondary_dark</item>
+
+        <!-- Background colors -->
+        <item name="android:colorBackground">@color/background_dark</item>
+        <item name="backgroundLight">@color/background_light_dark</item>
+        <item name="colorSurface">@color/surface_dark</item>
+
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/text_primary_dark</item>
+        <item name="android:textColorSecondary">@color/text_secondary_dark</item>
+        <item name="android:textColorTertiary">@color/text_tertiary_dark</item>
+        <item name="primaryTextColor">@color/primary_text_dark</item>
+        <item name="secondaryTextColor">@color/secondary_text_dark</item>
+        <item name="colorTextSecondary">@color/colorTextSecondary_dark</item>
+
+        <!-- UI element colors -->
+        <item name="cardBackgroundColor">@color/card_background_dark</item>
+        <item name="cardBackground">@color/card_background_dark</item>
+        <item name="lightCardBackground">@color/card_background_light_dark</item>
+        <item name="userDetailBackground">@color/user_detail_dark</item>
+        <item name="voucherBackground">@color/voucher_bg_dark</item>
+        <item name="voucherTextColor">@color/voucher_text_color_dark</item>
+
+        <!-- Icon colors -->
+        <item name="iconColor">@color/icon_color_dark</item>
+        <item name="iconEditColor">@color/icon_edit_dark</item>
+        <item name="iconVoucherColor">@color/icon_voucher_dark</item>
+
+        <!-- Special colors -->
+        <item name="ratingColor">@color/rating_color_dark</item>
+        <item name="ratingBackgroundColor">@color/rating_background_dark</item>
+        <item name="sloganTextColor">@color/slogan_text_color_dark</item>
+        <item name="rippleColor">@color/ripple_color_dark</item>
+
+        <!-- Status colors -->
+        <item name="colorError">@color/error_dark</item>
+        <item name="errorColor">@color/error_color_dark</item>
+        <item name="successColor">@color/success_color_dark</item>
+        <item name="warningColor">@color/colorWarning_dark</item>
+        <item name="dangerColor">@color/color_danger_dark</item>
+        <item name="dividerColor">@color/divider_dark</item>
+
+        <!-- Gray shades -->
+        <item name="grayColor">@color/gray_dark</item>
+        <item name="lightGrayColor">@color/light_gray_dark</item>
+        <item name="gray400Color">@color/gray_400_dark</item>
+
+        <!-- System colors -->
+        <item name="android:statusBarColor">@color/status_bar_dark</item>
+        <item name="android:navigationBarColor">@color/nav_bar_dark</item>
+        <item name="android:windowBackground">@color/background_dark</item>
     </style>
+
+    <style name="CircleImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+        <item name="strokeColor">@color/primary_lighter_dark</item>
+    </style>
+
+    <style name="RoundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="CircleImage">
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <!-- EditText style -->
+        <item name="android:textColorPrimary">@color/text_primary_dark</item>
+        <item name="android:textColorHint">@color/text_secondary_dark</item>
+        <item name="android:textSize">16sp</item>
+
+        <!-- Icon styles -->
+        <item name="searchIcon">@null</item>
+        <item name="closeIcon">@drawable/ic_close</item>
+        <item name="searchHintIcon">@null</item>
+
+        <!-- No underline -->
+        <item name="queryBackground">@null</item>
+        <item name="submitBackground">@null</item>
+    </style>
+
+    <style name="BottomSheetDialogTheme" parent="Theme.MaterialComponents.DayNight.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="CustomBottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="android:background">@color/surface_dark</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="SpinnerTheme" parent="Widget.AppCompat.Spinner">
+        <item name="android:background">@color/surface_dark</item>
+        <item name="android:popupBackground">@color/surface_dark</item>
+        <item name="android:textColor">@color/text_primary_dark</item>
+    </style>
+
+    <style name="Theme.MyApp" parent="Base.Theme.MyApp" />
 </resources>

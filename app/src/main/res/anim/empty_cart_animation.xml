@@ -2,30 +2,68 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:ordering="sequentially">
 
-    <!-- Fade in animation -->
+    <!-- Hiệu ứng dần hiện ra -->
     <objectAnimator
         android:propertyName="alpha"
         android:duration="500"
-        android:valueFrom="0"
         android:valueTo="1"
+        android:valueFrom="0"
         android:valueType="floatType"/>
 
-    <!-- Slight bounce animation -->
+    <!-- Hiệu ứng lắc nhẹ -->
     <set android:ordering="together">
         <objectAnimator
-            android:propertyName="scaleX"
-            android:duration="700"
-            android:valueFrom="0.8"
-            android:valueTo="1"
+            android:propertyName="rotation"
+            android:duration="800"
+            android:valueFrom="-5"
+            android:valueTo="5"
             android:valueType="floatType"
-            android:interpolator="@android:interpolator/overshoot"/>
+            android:repeatMode="reverse"
+            android:repeatCount="3"
+            android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+
+        <objectAnimator
+            android:propertyName="scaleX"
+            android:duration="800"
+            android:valueFrom="0.8"
+            android:valueTo="1.05"
+            android:valueType="floatType"
+            android:repeatMode="reverse"
+            android:repeatCount="3"
+            android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
 
         <objectAnimator
             android:propertyName="scaleY"
-            android:duration="700"
+            android:duration="800"
             android:valueFrom="0.8"
-            android:valueTo="1"
+            android:valueTo="1.05"
             android:valueType="floatType"
-            android:interpolator="@android:interpolator/overshoot"/>
+            android:repeatMode="reverse"
+            android:repeatCount="3"
+            android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+    </set>
+
+    <!-- Hiệu ứng ổn định lại kích thước và góc quay -->
+    <set android:ordering="together">
+        <objectAnimator
+            android:propertyName="rotation"
+            android:duration="300"
+            android:valueFrom="5"
+            android:valueTo="0"
+            android:valueType="floatType"/>
+
+        <objectAnimator
+            android:propertyName="scaleX"
+            android:duration="300"
+            android:valueFrom="1.05"
+            android:valueTo="1"
+            android:valueType="floatType"/>
+
+        <objectAnimator
+            android:propertyName="scaleY"
+            android:duration="300"
+            android:valueFrom="1.05"
+            android:valueTo="1"
+            android:valueType="floatType"/>
     </set>
 </set>

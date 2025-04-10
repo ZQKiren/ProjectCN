@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapp.R;
 import com.example.myapp.data.Product;
 import com.example.myapp.fragments.ProductDetailFragment;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.text.NumberFormat;
@@ -46,7 +48,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ProductViewHol
                 ProductDetailFragment fragment = ProductDetailFragment.newInstance(product);
                 FragmentTransaction transaction = ((FragmentActivity) v.getContext())
                         .getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_frame, fragment); // Đảm bảo `R.id.content_frame` là ID của container
+                transaction.replace(R.id.content_frame, fragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -64,6 +66,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ProductViewHol
         private final TextView productOriginalPrice;
         private final ImageView productImage;
         private final TextView productDiscount;
+        private final ProgressBar loadingIndicator;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,6 +75,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ProductViewHol
             productOriginalPrice = itemView.findViewById(R.id.product_original_price);
             productImage = itemView.findViewById(R.id.product_image);
             productDiscount = itemView.findViewById(R.id.product_discount);
+            loadingIndicator = itemView.findViewById(R.id.loading_indicator);
         }
 
         public void bind(Product product) {
@@ -103,9 +107,24 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ProductViewHol
 
             // Hiển thị ảnh đầu tiên trong danh sách images nếu có
             if (product.getImages() != null && !product.getImages().isEmpty()) {
-                Picasso.get().load(product.getImages().get(0)).into(productImage);
+                loadingIndicator.setVisibility(View.VISIBLE);
+                Picasso.get()
+                        .load(product.getImages().get(0))
+                        .into(productImage, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                loadingIndicator.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                loadingIndicator.setVisibility(View.GONE);
+                                productImage.setImageResource(R.drawable.ic_placeholder_image);
+                            }
+                        });
             } else {
-                productImage.setImageResource(R.drawable.ic_placeholder_image); // Ảnh mặc định nếu không có ảnh
+                loadingIndicator.setVisibility(View.GONE);
+                productImage.setImageResource(R.drawable.ic_placeholder_image);
             }
         }
     }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Thuộc tính màu sắc cơ bản -->
+    <attr name="primaryColor" format="color" />
+    <attr name="backgroundLight" format="color" />
+
+    <!-- Thuộc tính màu văn bản -->
+    <attr name="primaryTextColor" format="color" />
+    <attr name="secondaryTextColor" format="color" />
+    <attr name="colorTextSecondary" format="color" />
+
+    <!-- Thuộc tính nền -->
+    <attr name="cardBackground" format="color" />
+    <attr name="lightCardBackground" format="color" />
+    <attr name="userDetailBackground" format="color" />
+    <attr name="voucherBackground" format="color" />
+    <attr name="voucherTextColor" format="color" />
+
+    <!-- Thuộc tính biểu tượng -->
+    <attr name="iconColor" format="color" />
+    <attr name="iconEditColor" format="color" />
+    <attr name="iconVoucherColor" format="color" />
+
+    <!-- Thuộc tính đặc biệt -->
+    <attr name="ratingColor" format="color" />
+    <attr name="ratingBackgroundColor" format="color" />
+    <attr name="sloganTextColor" format="color" />
+    <attr name="rippleColor" format="color" />
+
+    <!-- Thuộc tính trạng thái -->
+    <attr name="errorColor" format="color" />
+    <attr name="successColor" format="color" />
+    <attr name="warningColor" format="color" />
+    <attr name="dangerColor" format="color" />
+    <attr name="dividerColor" format="color" />
+
+    <!-- Thuộc tính xám -->
+    <attr name="grayColor" format="color" />
+    <attr name="lightGrayColor" format="color" />
+    <attr name="gray400Color" format="color" />
+</resources>

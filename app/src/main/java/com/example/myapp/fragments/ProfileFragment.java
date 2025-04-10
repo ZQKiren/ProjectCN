@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -15,16 +16,21 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.myapp.R;
 import com.example.myapp.activities.LoginActivity;
 import com.example.myapp.data.User;
+import com.example.myapp.utils.ThemeUtils;
 import com.example.myapp.viewmodel.ProfileViewModel;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
 import com.google.android.gms.auth.api.identity.Identity;
 import com.google.android.gms.auth.api.identity.SignInClient;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.appbar.AppBarLayout;
@@ -49,6 +55,8 @@ public class ProfileFragment extends Fragment {
     private AppBarLayout appBarLayout;
     private View rootView;
     private SignInClient signInClient;
+    private SwitchMaterial themeSwitch;
+    private MaterialButton themeToggleButton;
 
     @Nullable
     @Override
@@ -60,11 +68,11 @@ public class ProfileFragment extends Fragment {
         setupClickListeners();
         setupAppBarBehavior();
         startEntryAnimations();
+        setupThemeToggle();
         return rootView;
     }
 
     private void initGoogleSignInClient() {
-        // Thay thế GoogleSignInOptions bằng BeginSignInRequest
         BeginSignInRequest signInRequest = BeginSignInRequest.builder()
                 .setGoogleIdTokenRequestOptions(BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                         .setSupported(true)
@@ -79,7 +87,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         initGoogleSignInClient();
     }
 
@@ -92,12 +99,16 @@ public class ProfileFragment extends Fragment {
         vouchersCountView = rootView.findViewById(R.id.vouchers_count);
         statsCard = rootView.findViewById(R.id.stats_card);
         appBarLayout = rootView.findViewById(R.id.appBarLayout);
+        themeSwitch = rootView.findViewById(R.id.theme_switch);
+        themeToggleButton = rootView.findViewById(R.id.btn_theme_toggle);
+
         // Prepare views for entry animations
         avatarImageView.setScaleX(0f);
         avatarImageView.setScaleY(0f);
         statsCard.setTranslationY(100f);
         statsCard.setAlpha(0f);
     }
+
     private void setupViewModel() {
         profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
         profileViewModel.getUserData().observe(getViewLifecycleOwner(), this::updateUI);
@@ -117,23 +128,18 @@ public class ProfileFragment extends Fragment {
                         .into(avatarImageView);
             }
 
-            // Cập nhật các số liệu
+            // Update statistics
             profileViewModel.getOrderCount(user.getId())
                     .observe(getViewLifecycleOwner(),
                             orderCount -> animateNumberChange(ordersCountView, orderCount));
 
-            // Cập nhật số voucher
+            // Update voucher count
             profileViewModel.getVoucherCount(user.getId())
                     .observe(getViewLifecycleOwner(),
                             voucherCount -> animateNumberChange(vouchersCountView, voucherCount));
 
-            // Hiển thị điểm
+            // Display points
             animateNumberChange(pointsCountView, user.getPoints());
-
-            // Cập nhật số voucher
-            profileViewModel.getVoucherCount(user.getId())
-                    .observe(getViewLifecycleOwner(),
-                            voucherCount -> animateNumberChange(vouchersCountView, voucherCount));
         }
     }
 
@@ -169,6 +175,54 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    private void setupThemeToggle() {
+        // Check the current night mode
+        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        boolean isDarkModeOn = currentNightMode == Configuration.UI_MODE_NIGHT_YES;
+
+        // Set the initial state of the switch
+        themeSwitch.setChecked(isDarkModeOn);
+
+        // Set the button icon based on current theme
+        updateThemeButtonIcon(isDarkModeOn);
+
+        // Set up the switch listener
+        themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            toggleDarkMode(isChecked);
+        });
+
+        // Set up the button listener
+        themeToggleButton.setOnClickListener(v -> {
+            boolean newState = !themeSwitch.isChecked();
+            themeSwitch.setChecked(newState);
+            toggleDarkMode(newState);
+        });
+    }
+
+    private void toggleDarkMode(boolean enableDarkMode) {
+        // Save the preference
+        ThemeUtils.saveDarkModePreference(requireContext(), enableDarkMode);
+
+        // Update button icon
+        updateThemeButtonIcon(enableDarkMode);
+
+        // Apply the theme
+        if (enableDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
+        // No need to recreate the activity, AppCompatDelegate will handle it
+    }
+
+    private void updateThemeButtonIcon(boolean isDarkMode) {
+        int iconId = isDarkMode ? R.drawable.ic_light_mode : R.drawable.ic_dark_mode;
+        String text = isDarkMode ? "Chế độ sáng" : "Chế độ tối";
+        themeToggleButton.setIcon(getResources().getDrawable(iconId, requireContext().getTheme()));
+        themeToggleButton.setText(text);
+    }
+
     private void setupClickListeners() {
         // Profile edit button
         rootView.findViewById(R.id.btn_edit_profile).setOnClickListener(v -> animateButtonClick(v, () ->
@@ -182,11 +236,11 @@ public class ProfileFragment extends Fragment {
         rootView.findViewById(R.id.btn_vouchers).setOnClickListener(v -> animateButtonClick(v, () ->
                 navigateToFragment(new VoucherFragment())));
 
-        // Vouchers button
+        // About us button
         rootView.findViewById(R.id.btn_about_us).setOnClickListener(v -> animateButtonClick(v, () ->
-                navigateToFragment(new AboutUsFragment ())));
+                navigateToFragment(new AboutUsFragment())));
 
-        // Trong setupClickListeners() thêm:
+        // Favorites button
         rootView.findViewById(R.id.btn_favorite).setOnClickListener(v ->
                 animateButtonClick(v, () -> navigateToFragment(new FavoriteFragment())));
 
@@ -275,14 +329,15 @@ public class ProfileFragment extends Fragment {
                 rootView.findViewById(R.id.btn_order_history),
                 rootView.findViewById(R.id.btn_vouchers),
                 rootView.findViewById(R.id.btn_favorite),
+                rootView.findViewById(R.id.btn_theme_toggle),
                 rootView.findViewById(R.id.btn_about_us),
                 rootView.findViewById(R.id.btn_logout)
         };
 
         for (View button : buttons) {
-            button.setVisibility(View.VISIBLE); // Đảm bảo hiển thị nút
-            button.setAlpha(1f);               // Hiển thị rõ ràng
-            button.setTranslationX(0f);        // Đặt vị trí ban đầu
+            button.setVisibility(View.VISIBLE);
+            button.setAlpha(1f);
+            button.setTranslationX(0f);
         }
     }
 
@@ -291,22 +346,22 @@ public class ProfileFragment extends Fragment {
                 .setTitle("Đăng xuất")
                 .setMessage("Bạn có chắc chắn muốn đăng xuất?")
                 .setPositiveButton("Có", (dialogInterface, i) -> {
-                    // Lấy người dùng hiện tại
+                    // Get current user
                     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
                     if (currentUser != null) {
-                        // Cập nhật trạng thái offline trước khi đăng xuất
+                        // Update offline status before logging out
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                         db.collection("users").document(currentUser.getUid())
                                 .update("status", "offline")
                                 .addOnSuccessListener(aVoid -> {
-                                    // Đăng xuất Firebase
+                                    // Firebase logout
                                     FirebaseAuth.getInstance().signOut();
 
-                                    // Kiểm tra provider đăng nhập
+                                    // Check login provider
                                     if (currentUser.getProviderData().stream()
                                             .anyMatch(profile -> profile.getProviderId().equals("google.com"))) {
-                                        // Sử dụng SignInClient để đăng xuất Google
+                                        // Use SignInClient for Google logout
                                         signInClient.signOut()
                                                 .addOnCompleteListener(task -> {
                                                     if (task.isSuccessful()) {

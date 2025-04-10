@@ -132,5 +132,8 @@
     <string name="order_date_label">Ngày đặt hàng</string>
     <string name="total_amount_label">Tổng tiền</string>
 
+    <string name="order_id_format">Mã đơn hàng: #%s</string>
+    <string name="points_earned_format">+%d điểm tích lũy</string>
+
     <string name="manage_vouchers">Quản lý voucher</string>
 </resources>

@@ -2,7 +2,6 @@ package com.example.myapp.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
-
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -59,7 +59,10 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         recyclerViewProducts = view.findViewById(R.id.recycler_view_home);
-        recyclerViewProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
+
+        // Using GridLayoutManager with 2 columns
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        recyclerViewProducts.setLayoutManager(gridLayoutManager);
 
         productAdapter = new HomeAdapter(productList);
         recyclerViewProducts.setAdapter(productAdapter);
@@ -67,19 +70,28 @@ public class HomeFragment extends Fragment {
         searchView = view.findViewById(R.id.search_view);
 
         setupSpinners(view);
+        setupSearchView();
 
+        ImageView micIcon = view.findViewById(R.id.mic_icon);
+        micIcon.setOnClickListener(v -> startVoiceInput());
+
+        loadProductsFromFirestore();
+        return view;
+    }
+
+    private void setupSearchView() {
+        // Customize SearchView appearance
         int searchEditId = searchView.getContext().getResources()
                 .getIdentifier("android:id/search_src_text", null, null);
         EditText searchEditText = searchView.findViewById(searchEditId);
 
         if (searchEditText != null) {
-
             searchEditText.setTextColor(Color.BLACK);
             searchEditText.setHintTextColor(Color.GRAY);
             searchEditText.setBackgroundResource(android.R.color.transparent);
             searchEditText.setPadding(0, 0, 0, 0);
 
-            // Xóa underline
+            // Remove underline
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 searchEditText.setTextCursorDrawable(null);
             }
@@ -89,8 +101,6 @@ public class HomeFragment extends Fragment {
         if (searchPlate != null) {
             searchPlate.setBackgroundColor(Color.TRANSPARENT);
         }
-
-        ImageView micIcon = view.findViewById(R.id.mic_icon);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -103,12 +113,10 @@ public class HomeFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                // Consider implementing real-time filtering here if needed
                 return false;
             }
         });
-        micIcon.setOnClickListener(v -> startVoiceInput());
-        loadProductsFromFirestore();
-        return view;
     }
 
     private void startVoiceInput() {
@@ -150,21 +158,59 @@ public class HomeFragment extends Fragment {
 
         categories = new ArrayList<>();
         categories.add("Tất cả");
-        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(
+
+        // Create and set custom adapter for category spinner
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
                 categories
-        );
+        ) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView textView = (TextView) view;
+                textView.setTextColor(Color.BLACK);
+                return view;
+            }
+
+            @Override
+            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView textView = (TextView) view;
+                textView.setPadding(16, 16, 16, 16);
+                return view;
+            }
+        };
+
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(categoryAdapter);
 
-        // Thiết lập spinner sắp xếp
+        // Create and set custom adapter for sort spinner
         String[] sortOptions = {"Mặc định", "Tên A-Z", "Tên Z-A", "Giá thấp-cao", "Giá cao-thấp"};
-        ArrayAdapter<String> sortAdapter = new ArrayAdapter<>(
+        ArrayAdapter<String> sortAdapter = new ArrayAdapter<String>(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
                 sortOptions
-        );
+        ) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView textView = (TextView) view;
+                textView.setTextColor(Color.BLACK);
+                return view;
+            }
+
+            @Override
+            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView textView = (TextView) view;
+                textView.setPadding(16, 16, 16, 16);
+                return view;
+            }
+        };
+
         sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortSpinner.setAdapter(sortAdapter);
 
@@ -207,13 +253,13 @@ public class HomeFragment extends Fragment {
                             productList.add(product);
                             originalProductList.add(product);
 
-                            // Thêm danh mục vào set
+                            // Collect unique categories
                             if (product.getCategory() != null && !product.getCategory().isEmpty()) {
                                 categorySet.add(product.getCategory());
                             }
                         }
 
-                        // Cập nhật danh sách danh mục
+                        // Update category list
                         categories.clear();
                         categories.add("Tất cả");
                         categories.addAll(categorySet);
@@ -246,22 +292,22 @@ public class HomeFragment extends Fragment {
 
     private void sortProducts(int sortOption) {
         switch (sortOption) {
-            case 1:
+            case 1:  // Tên A-Z
                 productList.sort((p1, p2) ->
                         p1.getName().compareToIgnoreCase(p2.getName()));
                 break;
-            case 2:
+            case 2:  // Tên Z-A
                 productList.sort((p1, p2) ->
                         p2.getName().compareToIgnoreCase(p1.getName()));
                 break;
-            case 3: // Giá thấp-cao (tính cả khuyến mãi)
+            case 3:  // Giá thấp-cao (tính cả khuyến mãi)
                 productList.sort(Comparator.comparingDouble(Product::getDiscountedPrice));
                 break;
-            case 4: // Giá cao-thấp (tính cả khuyến mãi)
+            case 4:  // Giá cao-thấp (tính cả khuyến mãi)
                 productList.sort((p1, p2) ->
                         Double.compare(p2.getDiscountedPrice(), p1.getDiscountedPrice()));
                 break;
-            default: // Mặc định - không sắp xếp
+            default:  // Mặc định - không sắp xếp
                 if (categorySpinner.getSelectedItem().toString().equals("Tất cả")) {
                     productList.clear();
                     productList.addAll(originalProductList);
@@ -280,12 +326,13 @@ public class HomeFragment extends Fragment {
                         List<Product> filteredList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Product product = document.toObject(Product.class);
+                            product.setId(document.getId());
                             if (product.getName().toLowerCase(Locale.ROOT).contains(query.toLowerCase(Locale.ROOT))) {
                                 filteredList.add(product);
                             }
                         }
 
-                        // Chuyển đến SearchFragment với danh sách sản phẩm đã lọc
+                        // Navigate to SearchFragment with filtered product list
                         navigateToSearchFragment(filteredList, query);
                     } else {
                         Toast.makeText(getContext(), "Lỗi khi tìm kiếm sản phẩm", Toast.LENGTH_SHORT).show();
@@ -294,21 +341,21 @@ public class HomeFragment extends Fragment {
     }
 
     private void navigateToSearchFragment(List<Product> products, String query) {
-        // Tạo SearchFragment và truyền dữ liệu
+        // Create SearchFragment and pass data
         SearchFragment searchFragment = new SearchFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList("filtered_products", new ArrayList<>(products));
         args.putString("search_query", query);
         searchFragment.setArguments(args);
 
-        // Đặt trạng thái của BottomNavigationView
+        // Set state of BottomNavigationView if needed
         if (getActivity() instanceof MainActivity mainActivity) {
-            mainActivity.setBottomNavigationViewSelected(R.id.nav_search); // Đặt đúng ID của mục tìm kiếm
+            mainActivity.setBottomNavigationViewSelected(R.id.nav_search);
         }
 
-        // Chuyển đến SearchFragment
+        // Navigate to SearchFragment
         requireActivity().getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out) // Hiệu ứng chuyển đổi
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                 .replace(R.id.content_frame, searchFragment)
                 .addToBackStack(null)
                 .commit();

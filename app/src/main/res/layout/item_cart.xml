@@ -4,119 +4,117 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="6dp"
-    app:cardCornerRadius="16dp"
+    app:cardCornerRadius="12dp"
+    app:strokeWidth="0dp"
     app:cardElevation="2dp"
-    app:strokeWidth="0dp">
+    app:cardBackgroundColor="?attr/colorSurface"
+    android:layout_marginBottom="12dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="12dp">
 
-        <!-- Product Image -->
+        <!-- Ảnh sản phẩm -->
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/imgCartProduct"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:id="@+id/imgProduct"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:scaleType="centerCrop"
-            android:contentDescription="@string/product_image"
-            app:shapeAppearanceOverlay="@style/RoundedImageView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:shapeAppearanceOverlay="@style/RoundedImageView"/>
 
-        <!-- Product Info -->
+        <!-- Thông tin sản phẩm -->
         <LinearLayout
+            android:id="@+id/layoutProductInfo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginStart="12dp"
-            app:layout_constraintStart_toEndOf="@id/imgCartProduct"
-            app:layout_constraintEnd_toStartOf="@id/btnRemoveProduct"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toEndOf="@id/imgProduct"
+            app:layout_constraintEnd_toStartOf="@id/btnDelete"
             app:layout_constraintTop_toTopOf="parent">
 
+            <!-- Tên sản phẩm -->
             <TextView
-                android:id="@+id/tvCartProductName"
+                android:id="@+id/tvProductName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="16sp"
-                android:textColor="@color/text_primary"
+                android:textStyle="bold"
                 android:maxLines="2"
                 android:ellipsize="end"/>
 
+            <!-- Giá tiền -->
             <TextView
-                android:id="@+id/tvCartProductPrice"
+                android:id="@+id/tvProductPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/primary"
-                android:textStyle="bold"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="14sp"
                 android:layout_marginTop="4dp"/>
 
-            <!-- Quantity Controls -->
-            <LinearLayout
+            <!-- Hiển thị kích thước/màu sắc (nếu có) -->
+            <TextView
+                android:id="@+id/tvVariant"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:orientation="horizontal"
-                android:background="@drawable/quantity_background"
-                android:gravity="center"
-                android:layout_marginTop="8dp">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnDecreaseQuantity"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:insetLeft="0dp"
-                    android:insetTop="0dp"
-                    android:insetRight="0dp"
-                    android:insetBottom="0dp"
-                    app:icon="@drawable/ic_remove"
-                    app:iconGravity="textStart"
-                    app:iconPadding="0dp"
-                    android:contentDescription="@string/decrease_quantity"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"/>
-
-                <TextView
-                    android:id="@+id/tvQuantity"
-                    android:layout_width="48dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_primary"/>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnIncreaseQuantity"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:insetLeft="0dp"
-                    android:insetTop="0dp"
-                    android:insetRight="0dp"
-                    android:insetBottom="0dp"
-                    app:icon="@drawable/ic_add"
-                    app:iconGravity="textStart"
-                    app:iconPadding="0dp"
-                    android:contentDescription="@string/increase_quantity"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"/>
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="?android:attr/textColorSecondary"
+                android:layout_marginTop="2dp"/>
         </LinearLayout>
 
-        <!-- Remove Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnRemoveProduct"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:insetLeft="0dp"
-            android:insetTop="0dp"
-            android:insetRight="0dp"
-            android:insetBottom="0dp"
-            app:icon="@drawable/ic_close"
-            app:iconGravity="textStart"
-            app:iconPadding="0dp"
-            android:contentDescription="@string/remove_from_cart"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+        <!-- Điều chỉnh số lượng -->
+        <LinearLayout
+            android:id="@+id/layoutQuantity"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:orientation="horizontal"
+            android:background="@drawable/quantity_background"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@id/layoutProductInfo"
+            app:layout_constraintTop_toBottomOf="@id/layoutProductInfo">
+
+            <ImageButton
+                android:id="@+id/btnMinus"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_remove"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Giảm số lượng"/>
+
+            <TextView
+                android:id="@+id/tvQuantity"
+                android:layout_width="36dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="?android:attr/textColorPrimary"/>
+
+            <ImageButton
+                android:id="@+id/btnPlus"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_add"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Tăng số lượng"/>
+        </LinearLayout>
+
+        <!-- Nút xóa -->
+        <ImageButton
+            android:id="@+id/btnDelete"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_delete"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:contentDescription="Xóa sản phẩm"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </com.google.android.material.card.MaterialCardView>

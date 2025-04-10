@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapp.R;
 import com.example.myapp.adapters.CartAdapter;
 import com.example.myapp.data.Product;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -39,52 +40,79 @@ public class CartFragment extends Fragment implements CartAdapter.CartItemListen
     private FirebaseAuth auth;
     private RecyclerView recyclerView;
     private CartAdapter cartAdapter;
-    private Button btnPlaceOrder;
-    ImageView emptyCartIcon;
+    private MaterialButton btnPlaceOrder;
+    private MaterialButton btnStartShopping;
+    private View emptyStateContainer;
+    private View summaryCard;
+    private TextView tvTotalPrice;
+    private ImageView emptyCartIcon;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
 
+        initViews(view);
+        setupAnimation();
+        setupRecyclerView();
+        setupClickListeners();
+        loadCartItems();
+
+        return view;
+    }
+
+    private void initViews(View view) {
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         cartItems = new ArrayList<>();
 
+        recyclerView = view.findViewById(R.id.cart_recycler_view);
+        btnPlaceOrder = view.findViewById(R.id.btnPlaceOrder);
+        btnStartShopping = view.findViewById(R.id.btnStartShopping);
+        emptyStateContainer = view.findViewById(R.id.emptyStateContainer);
+        summaryCard = view.findViewById(R.id.summary_card);
+        tvTotalPrice = view.findViewById(R.id.tvTotalPrice);
+        emptyCartIcon = view.findViewById(R.id.emptyCartIcon);
+    }
 
-        emptyCartIcon = view.findViewById(R.id.emptyCartIcon); // Thêm view.
-        AnimatorSet animation = (AnimatorSet) AnimatorInflater.loadAnimator(requireContext(), R.anim.empty_cart_animation); // Dùng requireContext()
+    private void setupAnimation() {
+        AnimatorSet animation = (AnimatorSet) AnimatorInflater.loadAnimator(requireContext(), R.anim.empty_cart_animation);
         animation.setTarget(emptyCartIcon);
         animation.start();
+    }
 
-        recyclerView = view.findViewById(R.id.cart_recycler_view);
+    private void setupRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        btnPlaceOrder = view.findViewById(R.id.btnPlaceOrder);
         String userId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
-
         cartAdapter = new CartAdapter(cartItems, userId, this, requireContext());
         recyclerView.setAdapter(cartAdapter);
+    }
 
-        loadCartItems();
+    private void setupClickListeners() {
+        btnPlaceOrder.setOnClickListener(v -> navigateToOrderFragment());
+        btnStartShopping.setOnClickListener(v -> navigateToHomeFragment());
+    }
 
-        btnPlaceOrder.setOnClickListener(v -> {
-            // Lấy danh sách sản phẩm với số lượng tùy chỉnh
-            List<Product> updatedCartItems = cartAdapter.getUpdatedCartItems();
+    private void navigateToOrderFragment() {
+        // Lấy danh sách sản phẩm với số lượng tùy chỉnh
+        List<Product> updatedCartItems = cartAdapter.getUpdatedCartItems();
 
-            // Truyền danh sách này sang OrderFragment
-            OrderFragment orderFragment = new OrderFragment();
-            Bundle args = new Bundle();
-            args.putParcelableArrayList("cartItems", new ArrayList<>(updatedCartItems));
-            orderFragment.setArguments(args);
+        // Truyền danh sách này sang OrderFragment
+        OrderFragment orderFragment = new OrderFragment();
+        Bundle args = new Bundle();
+        args.putParcelableArrayList("cartItems", new ArrayList<>(updatedCartItems));
+        orderFragment.setArguments(args);
 
-            getParentFragmentManager().beginTransaction()
-                    .replace(R.id.content_frame, orderFragment)
-                    .addToBackStack(null)
-                    .commit();
-        });
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.content_frame, orderFragment)
+                .addToBackStack(null)
+                .commit();
+    }
 
-        return view;
+    private void navigateToHomeFragment() {
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.content_frame, new HomeFragment())
+                .commit();
     }
 
     private void updateTotalPrice() {
@@ -97,7 +125,6 @@ public class CartFragment extends Fragment implements CartAdapter.CartItemListen
             totalPrice += productPrice * quantity;
         }
 
-        TextView tvTotalPrice = requireView().findViewById(R.id.tvTotalPrice);
         tvTotalPrice.setText(formatPrice(totalPrice));
     }
 
@@ -128,19 +155,14 @@ public class CartFragment extends Fragment implements CartAdapter.CartItemListen
     }
 
     private void updateCartVisibility() {
-        View emptyStateContainer = requireView().findViewById(R.id.emptyStateContainer);
-        View summaryCard = requireView().findViewById(R.id.summaryCard); // Thêm id cho MaterialCardView tổng tiền
-
         if (cartItems.isEmpty()) {
             emptyStateContainer.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
             summaryCard.setVisibility(View.GONE);
-            btnPlaceOrder.setVisibility(View.GONE);
         } else {
             emptyStateContainer.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
             summaryCard.setVisibility(View.VISIBLE);
-            btnPlaceOrder.setVisibility(View.VISIBLE);
         }
     }
 
@@ -171,7 +193,6 @@ public class CartFragment extends Fragment implements CartAdapter.CartItemListen
         }
 
         // Cập nhật tổng tiền
-        TextView tvTotalPrice = requireView().findViewById(R.id.tvTotalPrice);
         tvTotalPrice.setText(formatPrice(totalPrice));
     }
 

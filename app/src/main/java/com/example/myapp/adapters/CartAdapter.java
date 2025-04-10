@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,7 +16,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.myapp.R;
 import com.example.myapp.data.Product;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -85,17 +85,29 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         double totalPrice = finalPrice * currentQuantity;
         holder.tvProductPrice.setText(formatPrice(totalPrice));
 
+        // Hiển thị kích thước/màu sắc nếu có
+        if (product.getSizes() != null && !product.getSizes().isEmpty() &&
+                product.getColors() != null && !product.getColors().isEmpty()) {
+            String variantText = product.getSizes().get(0) + " / " + product.getColors().get(0);
+            holder.tvVariant.setText(variantText);
+            holder.tvVariant.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvVariant.setVisibility(View.GONE);
+        }
+
         // Tải ảnh sản phẩm
-        loadProductImage(holder.imgProduct, product.getImages().get(0), context);
+        if (product.getImages() != null && !product.getImages().isEmpty()) {
+            loadProductImage(holder.imgProduct, product.getImages().get(0), context);
+        }
 
         // Xử lý sự kiện tăng số lượng
-        holder.btnIncreaseQuantity.setOnClickListener(v -> {
+        holder.btnPlus.setOnClickListener(v -> {
             int currentQty = temporaryQuantities.getOrDefault(productId, 1);
             handleQuantityChange(holder, product, currentQty + 1);
         });
 
-// Xử lý sự kiện giảm số lượng
-        holder.btnDecreaseQuantity.setOnClickListener(v -> {
+        // Xử lý sự kiện giảm số lượng
+        holder.btnMinus.setOnClickListener(v -> {
             int currentQty = temporaryQuantities.getOrDefault(productId, 1);
             if (currentQty > 1) {
                 handleQuantityChange(holder, product, currentQty - 1);
@@ -103,7 +115,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         });
 
         // Xử lý sự kiện xóa sản phẩm
-        holder.btnRemoveProduct.setOnClickListener(v -> removeProduct(holder, position, product));
+        holder.btnDelete.setOnClickListener(v -> removeProduct(holder, position, product));
     }
 
     private double calculateFinalPrice(Product product) {
@@ -128,7 +140,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     }
 
     private void handleQuantityChange(CartViewHolder holder, Product product, int newQuantity) {
-        if (newQuantity > 0 && newQuantity <= product.getQuantity()) {
+        if (newQuantity > 0 && (product.getQuantity() == 0 || newQuantity <= product.getQuantity())) {
             // Lưu số lượng mới vào SharedPreferences
             preferences.edit().putInt(product.getId(), newQuantity).apply();
 
@@ -208,19 +220,20 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     }
 
     static class CartViewHolder extends RecyclerView.ViewHolder {
-        TextView tvProductName, tvProductPrice, tvQuantity;
+        TextView tvProductName, tvProductPrice, tvQuantity, tvVariant;
         ShapeableImageView imgProduct;
-        MaterialButton btnRemoveProduct, btnIncreaseQuantity, btnDecreaseQuantity;
+        ImageButton btnDelete, btnPlus, btnMinus;
 
         public CartViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvProductName = itemView.findViewById(R.id.tvCartProductName);
-            tvProductPrice = itemView.findViewById(R.id.tvCartProductPrice);
+            tvProductName = itemView.findViewById(R.id.tvProductName);
+            tvProductPrice = itemView.findViewById(R.id.tvProductPrice);
             tvQuantity = itemView.findViewById(R.id.tvQuantity);
-            imgProduct = itemView.findViewById(R.id.imgCartProduct);
-            btnRemoveProduct = itemView.findViewById(R.id.btnRemoveProduct);
-            btnIncreaseQuantity = itemView.findViewById(R.id.btnIncreaseQuantity);
-            btnDecreaseQuantity = itemView.findViewById(R.id.btnDecreaseQuantity);
+            tvVariant = itemView.findViewById(R.id.tvVariant);
+            imgProduct = itemView.findViewById(R.id.imgProduct);
+            btnDelete = itemView.findViewById(R.id.btnDelete);
+            btnPlus = itemView.findViewById(R.id.btnPlus);
+            btnMinus = itemView.findViewById(R.id.btnMinus);
         }
     }
 }

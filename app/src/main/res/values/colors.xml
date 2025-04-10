@@ -1,81 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Màu cơ bản -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="primaryColor">#FF6200EE</color>
-    <color name="gray">#808080</color>
-    <color name="primaryDarkColor">#FF0000</color> <!-- Màu đỏ đậm -->
-
-    <color name="primary">#FF1976D2</color>
-    <color name="accent_color">#FF2196F3</color>
-    <color name="text_primary">#DE000000</color>
-    <color name="text_secondary">#99000000</color>
-    <color name="divider">#1F000000</color>
-    <color name="error_color">#F44336</color>
-    <color name="ripple_color">#33FFFFFF</color>
-    <color name="success_color">#4CAF50</color>
-
-    <color name="primary_text">#212121</color>
-    <color name="secondary_text">#757575</color>
-
-    <color name="light_gray">#D3D3D3</color>
-
-    <!-- Core colors -->
-    <color name="background">#F5F5F5</color>
-    <color name="error">#DC3545</color>
-    <!-- Icon colors -->
-    <color name="icon_edit">#2196F3</color>
-    <color name="icon_voucher">#FF9800</color>
-
-    <color name="colorPrimary">#1976D2</color>
-    <color name="colorTextSecondary">#757575</color>
-    <color name="colorWarning">#FFC107</color>
-
-    <color name="purple_700">#6200EE</color>
-    <color name="green">#4CAF50</color>
-    <color name="color_danger">#F44336</color>
-
-    <!-- Màu nền sáng -->
-    <color name="background_light">#FFF8F9</color>
-
-    <!-- Màu nền cho CardView -->
-    <color name="card_background_light">#FFFFFF</color>
+    <color name="transparent">#00000000</color>
 
     <!-- Màu chính -->
+    <color name="primaryColor">#FF6200EE</color>
+    <color name="primaryDarkColor">#FF0000</color>
+    <color name="primary">#FF1976D2</color>
+    <color name="primary_dark">#D41E3C</color>
     <color name="primary_color">#FF4081</color>
-    <color name="user_detail">#f1e6f3</color>
+    <color name="primary_light">#FF6B88</color>
+    <color name="primary_lighter">#FFE4E9</color>
+    <color name="colorPrimary">#1976D2</color>
+    <color name="purple_700">#6200EE</color>
 
+    <!-- Màu phụ -->
+    <color name="accent_color">#FF2196F3</color>
+    <color name="secondary">#4CAF50</color>
     <color name="gradient_end">#00BCD4</color>
+
+    <!-- Màu văn bản -->
+    <color name="text_primary">#DE000000</color>
+    <color name="text_secondary">#99000000</color>
+    <color name="text_tertiary">#61000000</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="colorTextSecondary">#757575</color>
+    <color name="slogan_text_color">#E0F0FF</color>
+    <color name="voucher_text_color">#757575</color>
+
+    <!-- Màu xám -->
+    <color name="gray">#808080</color>
+    <color name="light_gray">#D3D3D3</color>
+    <color name="gray_400">#9E9E9E</color>
+    <color name="icon_color">#666666</color>
+
+    <!-- Màu nền và bề mặt -->
+    <color name="background">#F5F5F5</color>
+    <color name="background_light">#FFF8F9</color>
+    <color name="card_background">#F8FFFFFF</color>
+    <color name="card_background_light">#FFFFFF</color>
+    <color name="surface">#F8FFFFFF</color>
+    <color name="user_detail">#f1e6f3</color>
+    <color name="voucher_bg">#F5F5F5</color>
+
+    <!-- Màu trạng thái -->
+    <color name="divider">#1F000000</color>
+    <color name="error">#DC3545</color>
+    <color name="error_color">#F44336</color>
+    <color name="color_danger">#F44336</color>
+    <color name="success_color">#4CAF50</color>
+    <color name="green">#4CAF50</color>
+    <color name="colorWarning">#FFC107</color>
+    <color name="ripple_color">#33FFFFFF</color>
+
+    <!-- Màu đặc biệt -->
+    <color name="icon_edit">#2196F3</color>
+    <color name="icon_voucher">#FF9800</color>
+    <color name="rating_color">#FFC107</color>
+    <color name="rating_background">#26FFC107</color>
     <color name="white_30">#4DFFFFFF</color>
     <color name="white_70">#B3FFFFFF</color>
 
-    <color name="slogan_text_color">#E0F0FF</color>
-
-    <color name="primary_dark">#D41E3C</color>
-
-    <color name="icon_color">#666666</color>
-
-    <color name="card_background">#F8FFFFFF</color>
-
-    <!-- Social Media Colors -->
+    <!-- Màu mạng xã hội -->
     <color name="facebook_blue">#1877F2</color>
     <color name="google_blue">#4285F4</color>
 
-    <color name="transparent">#00000000</color>
-
-    <color name="primary_light">#FF6B88</color>
-    <color name="primary_lighter">#FFE4E9</color>
-
-    <!-- Thêm màu cho rating -->
-    <color name="rating_color">#FFC107</color>
-    <color name="rating_background">#26FFC107</color>
-    <color name="surface">#F8FFFFFF</color>
-
-    <color name="gray_400">#FF9E9E9E</color>
-
-    <string name="order_id_format">Mã đơn hàng: #%s</string>
-    <string name="points_earned_format">+%d điểm tích lũy</string>
-
+    <!-- Màu trạng thái đơn hàng -->
     <color name="status_pending">#D9512C</color>
     <color name="status_processing">#FF9800</color>
     <color name="status_confirmed">#4CAF50</color>
@@ -84,8 +77,74 @@
     <color name="status_cancelled">#F44336</color>
     <color name="status_default">#757575</color>
 
-    <color name="voucher_bg">#F5F5F5</color>
-    <color name="voucher_text_color">#757575</color>
+    <!-- Màu điều hướng và thanh trạng thái -->
+    <color name="status_bar">#1976D2</color>
+    <color name="nav_bar">#FFFFFF</color>
+    <color name="dialog_background">#FFFFFF</color>
 
-    <color name="text_tertiary">#61000000</color>
+    <!-- DARK MODE COLORS -->
+
+    <!-- Màu chính - Dark mode -->
+    <color name="primaryColor_dark">#BB86FC</color>
+    <color name="primaryDarkColor_dark">#CF6679</color>
+    <color name="primary_dark_theme">#90CAF9</color>
+    <color name="primary_dark_dark">#E35D76</color>
+    <color name="primary_color_dark">#FF80AB</color>
+    <color name="primary_light_dark">#FF8A9B</color>
+    <color name="primary_lighter_dark">#663036</color>
+    <color name="colorPrimary_dark">#64B5F6</color>
+    <color name="purple_700_dark">#BB86FC</color>
+
+    <!-- Màu phụ - Dark mode -->
+    <color name="accent_color_dark">#64B5F6</color>
+    <color name="secondary_dark">#81C784</color>
+    <color name="gradient_end_dark">#26C6DA</color>
+
+    <!-- Màu văn bản - Dark mode -->
+    <color name="text_primary_dark">#FFFFFF</color>
+    <color name="text_secondary_dark">#B0B0B0</color>
+    <color name="text_tertiary_dark">#80FFFFFF</color>
+    <color name="primary_text_dark">#FFFFFF</color>
+    <color name="secondary_text_dark">#B0B0B0</color>
+    <color name="colorTextSecondary_dark">#B0B0B0</color>
+    <color name="slogan_text_color_dark">#B3E5FC</color>
+    <color name="voucher_text_color_dark">#B0B0B0</color>
+
+    <!-- Màu xám - Dark mode -->
+    <color name="gray_dark">#9E9E9E</color>
+    <color name="light_gray_dark">#616161</color>
+    <color name="gray_400_dark">#757575</color>
+    <color name="icon_color_dark">#B0B0B0</color>
+
+    <!-- Màu nền và bề mặt - Dark mode -->
+    <color name="background_dark">#121212</color>
+    <color name="background_light_dark">#1E1E1E</color>
+    <color name="card_background_dark">#2C2C2C</color>
+    <color name="card_background_light_dark">#2C2C2C</color>
+    <color name="surface_dark">#1E1E1E</color>
+    <color name="user_detail_dark">#483248</color>
+    <color name="voucher_bg_dark">#2C2C2C</color>
+
+    <!-- Màu trạng thái - Dark mode -->
+    <color name="divider_dark">#1FFFFFFF</color>
+    <color name="error_dark">#EF9A9A</color>
+    <color name="error_color_dark">#F88078</color>
+    <color name="color_danger_dark">#E57373</color>
+    <color name="success_color_dark">#81C784</color>
+    <color name="green_dark">#81C784</color>
+    <color name="colorWarning_dark">#FFD54F</color>
+    <color name="ripple_color_dark">#33000000</color>
+
+    <!-- Màu đặc biệt - Dark mode -->
+    <color name="icon_edit_dark">#64B5F6</color>
+    <color name="icon_voucher_dark">#FFB74D</color>
+    <color name="rating_color_dark">#FFD54F</color>
+    <color name="rating_background_dark">#26FFD54F</color>
+    <color name="white_30_dark">#4D000000</color>
+    <color name="white_70_dark">#B3000000</color>
+
+    <!-- Màu điều hướng và thanh trạng thái - Dark mode -->
+    <color name="status_bar_dark">#000000</color>
+    <color name="nav_bar_dark">#121212</color>
+    <color name="dialog_background_dark">#2C2C2C</color>
 </resources>

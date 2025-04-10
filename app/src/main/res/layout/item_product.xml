@@ -10,14 +10,14 @@
     app:strokeWidth="0dp"
     android:clickable="true"
     android:focusable="true"
-    app:rippleColor="@color/primary">
+    app:rippleColor="#2196F3">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <!-- Ảnh sản phẩm container -->
-        <com.google.android.material.card.MaterialCardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/image_container"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -33,9 +33,18 @@
                 android:id="@+id/product_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:contentDescription="Hình ảnh sản phẩm"/>
 
-        </com.google.android.material.card.MaterialCardView>
+            <!-- Loading indicator -->
+            <ProgressBar
+                android:id="@+id/loading_indicator"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:visibility="gone"/>
+
+        </androidx.cardview.widget.CardView>
 
         <!-- Badge giảm giá -->
         <TextView
@@ -45,7 +54,7 @@
             android:paddingHorizontal="8dp"
             android:paddingVertical="4dp"
             android:text="-20%"
-            android:textColor="@color/white"
+            android:textColor="#FFFFFF"
             android:textSize="12sp"
             android:textStyle="bold"
             android:background="@drawable/discount_badge_background"
@@ -69,16 +78,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:textColor="@color/text_primary"
+                android:textColor="#212121"
                 android:maxLines="2"
-                android:ellipsize="end" />
+                android:ellipsize="end"
+                android:layout_marginBottom="4dp"/>
 
             <!-- Giá container -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="8dp">
+                android:layout_marginTop="4dp">
 
                 <!-- Giá gốc -->
                 <TextView
@@ -86,8 +96,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
-                    android:textColor="@color/text_secondary"
-                    android:visibility="gone"/>
+                    android:textColor="#757575"
+                    android:visibility="gone"
+                    android:textStyle="italic"/>
 
                 <!-- Giá khuyến mãi -->
                 <TextView
@@ -96,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="@color/primary"/>
+                    android:textColor="#2196F3"/>
             </LinearLayout>
         </LinearLayout>
 
