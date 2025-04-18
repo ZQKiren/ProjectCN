@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="?android:attr/colorBackground"
     android:padding="24dp">
 
     <!-- Header Card -->
@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:elevation="4dp"
         app:cardCornerRadius="16dp"
+        app:cardBackgroundColor="?attr/colorSurface"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
@@ -27,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Trang Quản trị"
-                android:textColor="@color/primary_text"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="28sp"
                 android:textStyle="bold" />
 
@@ -37,7 +38,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
                 android:text="Quản lý hệ thống của bạn"
-                android:textColor="@color/secondary_text"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="16sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -58,10 +59,13 @@
             android:layout_marginBottom="16dp"
             android:text="@string/manage_vouchers"
             android:textSize="16sp"
+            android:textColor="?android:attr/textColorPrimary"
             app:cornerRadius="12dp"
             app:icon="@drawable/ic_voucher"
             app:iconGravity="textStart"
             app:iconPadding="16dp"
+            app:iconTint="?attr/colorPrimary"
+            app:strokeColor="?attr/colorPrimary"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
         <com.google.android.material.button.MaterialButton
@@ -72,10 +76,13 @@
             android:layout_marginBottom="16dp"
             android:text="Thống kê"
             android:textSize="16sp"
+            android:textColor="?android:attr/textColorPrimary"
             app:cornerRadius="12dp"
             app:icon="@drawable/ic_statistics"
             app:iconGravity="textStart"
             app:iconPadding="16dp"
+            app:iconTint="?attr/colorPrimary"
+            app:strokeColor="?attr/colorPrimary"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
         <!-- Manage Products Button -->
@@ -87,10 +94,13 @@
             android:layout_marginBottom="16dp"
             android:text="Quản lý sản phẩm"
             android:textSize="16sp"
+            android:textColor="?android:attr/textColorPrimary"
             app:cornerRadius="12dp"
             app:icon="@drawable/ic_inventory"
             app:iconGravity="textStart"
             app:iconPadding="16dp"
+            app:iconTint="?attr/colorPrimary"
+            app:strokeColor="?attr/colorPrimary"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
         <!-- Manage Accounts Button -->
@@ -99,12 +109,16 @@
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
             android:text="Quản lý tài khoản"
             android:textSize="16sp"
+            android:textColor="?android:attr/textColorPrimary"
             app:cornerRadius="12dp"
             app:icon="@drawable/ic_people"
             app:iconGravity="textStart"
             app:iconPadding="16dp"
+            app:iconTint="?attr/colorPrimary"
+            app:strokeColor="?attr/colorPrimary"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
         <com.google.android.material.button.MaterialButton
@@ -114,10 +128,13 @@
             android:layout_marginHorizontal="16dp"
             android:text="Quản lý đơn hàng"
             android:textSize="16sp"
+            android:textColor="?android:attr/textColorPrimary"
             app:cornerRadius="12dp"
             app:icon="@drawable/ic_manage_orders"
             app:iconGravity="textStart"
             app:iconPadding="16dp"
+            app:iconTint="?attr/colorPrimary"
+            app:strokeColor="?attr/colorPrimary"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
     </LinearLayout>

@@ -3,13 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?android:attr/colorBackground">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:title="Thống kê doanh thu"
+        app:titleTextColor="?android:attr/textColorPrimary"
+        app:navigationIcon="@drawable/ic_back"
+        app:navigationIconTint="?attr/colorControlNormal"/>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="?attr/colorSurface"
         app:cardElevation="4dp">
 
         <LinearLayout
@@ -29,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:text="Tổng số đơn hàng"
                     android:textSize="14sp"
-                    android:textColor="#666666" />
+                    android:textColor="?android:attr/textColorSecondary" />
 
                 <TextView
                     android:id="@+id/tvTotalOrders"
@@ -38,13 +49,13 @@
                     android:text="0"
                     android:textSize="24sp"
                     android:textStyle="bold"
-                    android:textColor="@android:color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
             </LinearLayout>
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="#E0E0E0"
+                android:background="?attr/dividerColor"
                 android:layout_marginHorizontal="16dp"/>
 
             <LinearLayout
@@ -58,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:text="Tổng doanh thu"
                     android:textSize="14sp"
-                    android:textColor="#666666" />
+                    android:textColor="?android:attr/textColorSecondary" />
 
                 <TextView
                     android:id="@+id/tvTotalAmount"
@@ -67,7 +78,7 @@
                     android:text="0 VND"
                     android:textSize="24sp"
                     android:textStyle="bold"
-                    android:textColor="@android:color/black" />
+                    android:textColor="?attr/colorPrimary" />
             </LinearLayout>
 
         </LinearLayout>
@@ -79,6 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
+        android:paddingHorizontal="8dp"
         android:paddingBottom="16dp"/>
 
 </LinearLayout>

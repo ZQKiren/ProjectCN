@@ -34,7 +34,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ProductViewHol
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_product, parent, false);
+                .inflate(R.layout.item_home, parent, false);
         return new ProductViewHolder(view);
     }
 
@@ -43,15 +43,37 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ProductViewHol
         Product product = productList.get(position);
         holder.bind(product);
 
+        // Add click animation
         holder.itemView.setOnClickListener(v -> {
-            if (v.getContext() instanceof FragmentActivity) {
-                ProductDetailFragment fragment = ProductDetailFragment.newInstance(product);
-                FragmentTransaction transaction = ((FragmentActivity) v.getContext())
-                        .getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_frame, fragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
+            // Apply click animation
+            v.animate()
+                    .scaleX(0.95f)
+                    .scaleY(0.95f)
+                    .setDuration(100)
+                    .withEndAction(() ->
+                            v.animate()
+                                    .scaleX(1f)
+                                    .scaleY(1f)
+                                    .setDuration(100)
+                                    .withEndAction(() -> {
+                                        // Navigate to detail after animation completes
+                                        if (v.getContext() instanceof FragmentActivity) {
+                                            ProductDetailFragment fragment = ProductDetailFragment.newInstance(product);
+                                            FragmentTransaction transaction = ((FragmentActivity) v.getContext())
+                                                    .getSupportFragmentManager().beginTransaction();
+                                            transaction.setCustomAnimations(
+                                                    R.anim.slide_in_right,
+                                                    R.anim.slide_out_left,
+                                                    R.anim.slide_in_left,
+                                                    R.anim.slide_out_right
+                                            );
+                                            transaction.replace(R.id.content_frame, fragment);
+                                            transaction.addToBackStack(null);
+                                            transaction.commit();
+                                        }
+                                    })
+                                    .start())
+                    .start();
         });
     }
 
@@ -91,6 +113,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ProductViewHol
                 // Hiển thị giá gốc (bị gạch ngang)
                 productOriginalPrice.setVisibility(View.VISIBLE);
                 productOriginalPrice.setText(NumberFormat.getCurrencyInstance(new Locale("vi", "VN")).format(originalPrice));
+                productOriginalPrice.setPaintFlags(productOriginalPrice.getPaintFlags() | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
 
                 // Hiển thị mức giảm giá
                 productDiscount.setVisibility(View.VISIBLE);

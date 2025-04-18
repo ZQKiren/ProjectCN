@@ -2,10 +2,10 @@ package com.example.myapp.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,14 +80,35 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupSearchView() {
+        // Get theme-dependent colors using TypedValue for proper attribute resolution
+        TypedValue typedValue = new TypedValue();
+        int textColor;
+        int hintColor;
+
+        // Get text color
+        if (requireContext().getTheme().resolveAttribute(android.R.attr.textColorPrimary, typedValue, true)) {
+            textColor = typedValue.data;
+        } else {
+            // Fallback color
+            textColor = requireContext().getResources().getColor(android.R.color.black, requireContext().getTheme());
+        }
+
+        // Get hint color
+        if (requireContext().getTheme().resolveAttribute(android.R.attr.textColorSecondary, typedValue, true)) {
+            hintColor = typedValue.data;
+        } else {
+            // Fallback color
+            hintColor = requireContext().getResources().getColor(android.R.color.darker_gray, requireContext().getTheme());
+        }
+
         // Customize SearchView appearance
         int searchEditId = searchView.getContext().getResources()
                 .getIdentifier("android:id/search_src_text", null, null);
         EditText searchEditText = searchView.findViewById(searchEditId);
 
         if (searchEditText != null) {
-            searchEditText.setTextColor(Color.BLACK);
-            searchEditText.setHintTextColor(Color.GRAY);
+            searchEditText.setTextColor(textColor);
+            searchEditText.setHintTextColor(hintColor);
             searchEditText.setBackgroundResource(android.R.color.transparent);
             searchEditText.setPadding(0, 0, 0, 0);
 
@@ -99,7 +120,7 @@ public class HomeFragment extends Fragment {
 
         View searchPlate = searchView.findViewById(androidx.appcompat.R.id.search_plate);
         if (searchPlate != null) {
-            searchPlate.setBackgroundColor(Color.TRANSPARENT);
+            searchPlate.setBackgroundColor(android.graphics.Color.TRANSPARENT);
         }
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -159,6 +180,19 @@ public class HomeFragment extends Fragment {
         categories = new ArrayList<>();
         categories.add("Tất cả");
 
+        // Get theme-dependent colors using TypedValue for proper attribute resolution
+        TypedValue typedValue = new TypedValue();
+        int textColor;
+
+        // Get text color that works in both light and dark modes
+        if (requireContext().getTheme().resolveAttribute(android.R.attr.textColorPrimary, typedValue, true)) {
+            textColor = typedValue.data;
+        } else {
+            // Fallback color - use your custom attribute if possible
+            textColor = requireContext().getResources().getColor(
+                    R.color.text_primary, requireContext().getTheme());
+        }
+
         // Create and set custom adapter for category spinner
         ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(
                 requireContext(),
@@ -170,7 +204,8 @@ public class HomeFragment extends Fragment {
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView textView = (TextView) view;
-                textView.setTextColor(Color.BLACK);
+                // Set theme-aware text color
+                textView.setTextColor(textColor);
                 return view;
             }
 
@@ -179,6 +214,8 @@ public class HomeFragment extends Fragment {
                 View view = super.getDropDownView(position, convertView, parent);
                 TextView textView = (TextView) view;
                 textView.setPadding(16, 16, 16, 16);
+                // Set theme-aware text color
+                textView.setTextColor(textColor);
                 return view;
             }
         };
@@ -198,7 +235,8 @@ public class HomeFragment extends Fragment {
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView textView = (TextView) view;
-                textView.setTextColor(Color.BLACK);
+                // Set theme-aware text color
+                textView.setTextColor(textColor);
                 return view;
             }
 
@@ -207,6 +245,8 @@ public class HomeFragment extends Fragment {
                 View view = super.getDropDownView(position, convertView, parent);
                 TextView textView = (TextView) view;
                 textView.setPadding(16, 16, 16, 16);
+                // Set theme-aware text color
+                textView.setTextColor(textColor);
                 return view;
             }
         };
@@ -217,6 +257,10 @@ public class HomeFragment extends Fragment {
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Need to set text color here too since Android sometimes resets it on selection
+                if (view instanceof TextView) {
+                    ((TextView) view).setTextColor(textColor);
+                }
                 filterProducts();
             }
 
@@ -228,6 +272,10 @@ public class HomeFragment extends Fragment {
         sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Need to set text color here too since Android sometimes resets it on selection
+                if (view instanceof TextView) {
+                    ((TextView) view).setTextColor(textColor);
+                }
                 sortProducts(position);
             }
 

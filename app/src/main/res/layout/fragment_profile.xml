@@ -30,24 +30,29 @@
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:src="@drawable/profile_background"
-                    app:layout_collapseMode="parallax"/>
+                    app:layout_collapseMode="parallax"
+                    android:contentDescription="Ảnh bìa hồ sơ"/>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/gradient_overlay"/>
 
-                <!-- Theme Toggle Switch -->
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/theme_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <!-- This theme toggle button in header can stay but we'll add another one below -->
+                <ImageView
+                    android:id="@+id/theme_toggle_button"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_margin="16dp"
+                    android:padding="12dp"
+                    android:background="@drawable/circle_button_background"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:thumbTint="?attr/colorPrimary"
-                    app:trackTint="@color/primary_lighter"
-                    android:thumb="@drawable/ic_theme_toggle"/>
+                    android:src="@drawable/ic_dark_mode"
+                    android:elevation="4dp"
+                    android:contentDescription="Chuyển đổi chế độ tối/sáng"/>
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/profile_avatar"
@@ -62,7 +67,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:shapeAppearanceOverlay="@style/CircleImageView"
                     app:strokeColor="@color/white"
-                    app:strokeWidth="3dp"/>
+                    app:strokeWidth="3dp"
+                    android:contentDescription="@string/avatar_description"/>
 
                 <TextView
                     android:id="@+id/profile_name"
@@ -284,22 +290,6 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_theme_toggle"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="8dp"
-                android:text="Chế độ tối"
-                android:textSize="16sp"
-                app:cornerRadius="12dp"
-                app:icon="@drawable/ic_dark_mode"
-                app:iconGravity="textStart"
-                app:iconPadding="16dp"
-                android:textColor="?android:attr/textColorPrimary"
-                app:iconTint="?attr/colorPrimary"
-                app:strokeColor="?attr/colorPrimary"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
-
-            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_about_us"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -308,6 +298,23 @@
                 android:textSize="16sp"
                 app:cornerRadius="12dp"
                 app:icon="@drawable/ic_info"
+                app:iconGravity="textStart"
+                app:iconPadding="16dp"
+                android:textColor="?android:attr/textColorPrimary"
+                app:iconTint="?attr/colorPrimary"
+                app:strokeColor="?attr/colorPrimary"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+            <!-- Add new Dark Mode Toggle Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_dark_mode"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:text="Chế độ tối"
+                android:textSize="16sp"
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_dark_mode"
                 app:iconGravity="textStart"
                 app:iconPadding="16dp"
                 android:textColor="?android:attr/textColorPrimary"

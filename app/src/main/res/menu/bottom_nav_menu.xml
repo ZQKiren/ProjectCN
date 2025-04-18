@@ -23,5 +23,6 @@
     <item
         android:id="@+id/nav_admin"
         android:icon="@drawable/ic_admin"
-        android:title="Quản trị" />
+        android:title="Quản trị"
+        android:visible="false" />
 </menu>

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapp.R;
 import com.example.myapp.adapters.FavoriteAdapter;
-
 import com.example.myapp.data.Product;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -57,28 +57,45 @@ public class FavoriteFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        // Thay GridLayoutManager bằng LinearLayoutManager
+        // Use LinearLayoutManager for a list view
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
+        // Set item decoration for spacing if needed
+        // recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+
+        // Create and set adapter with click listener
         adapter = new FavoriteAdapter(requireContext(), favoriteProducts, product -> {
-            Fragment fragment = ProductDetailFragment.newInstance(product);
-            requireActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .setCustomAnimations(
-                            R.anim.slide_in_right,
-                            R.anim.slide_out_left,
-                            R.anim.slide_in_left,
-                            R.anim.slide_out_right
-                    )
-                    .replace(R.id.content_frame, fragment)
-                    .addToBackStack(null)
-                    .commit();
+            navigateToProductDetail(product);
         });
         recyclerView.setAdapter(adapter);
     }
 
+    private void navigateToProductDetail(Product product) {
+        Fragment fragment = ProductDetailFragment.newInstance(product);
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(
+                        R.anim.slide_in_right,
+                        R.anim.slide_out_left,
+                        R.anim.slide_in_left,
+                        R.anim.slide_out_right
+                )
+                .replace(R.id.content_frame, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
     private void loadFavoriteProducts() {
+        // Check if user is signed in
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Toast.makeText(requireContext(), "Vui lòng đăng nhập để xem sản phẩm yêu thích", Toast.LENGTH_SHORT).show();
+            emptyView.setText("Vui lòng đăng nhập để xem sản phẩm yêu thích");
+            emptyView.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+            return;
+        }
+
         String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         progressBar.setVisibility(View.VISIBLE);
 
@@ -89,6 +106,7 @@ public class FavoriteFragment extends Fragment {
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
                         progressBar.setVisibility(View.GONE);
+                        Toast.makeText(requireContext(), "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                         return;
                     }
 
@@ -98,9 +116,10 @@ public class FavoriteFragment extends Fragment {
                             Product product = document.toObject(Product.class);
                             favoriteProducts.add(product);
                         }
-                        adapter.notifyDataSetChanged();
-                        updateEmptyView();
                     }
+
+                    adapter.notifyDataSetChanged();
+                    updateEmptyView();
                     progressBar.setVisibility(View.GONE);
                 });
     }

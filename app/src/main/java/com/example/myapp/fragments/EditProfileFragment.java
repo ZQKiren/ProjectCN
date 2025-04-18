@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -103,6 +104,7 @@ public class EditProfileFragment extends Fragment {
                 if (user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
                     Picasso.get()
                             .load(user.getAvatarUrl())
+                            .placeholder(R.drawable.ic_placeholder_image)
                             .error(R.drawable.ic_placeholder_image)
                             .into(avatarImageView);
                 }
@@ -113,11 +115,39 @@ public class EditProfileFragment extends Fragment {
     }
 
     private void setupGenderDropdown() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+        // Create custom adapter with the custom dropdown layout for dark mode support
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
                 requireContext(),
-                R.array.gender_options,
-                R.layout.item_dropdown
-        );
+                R.layout.item_dropdown,
+                getResources().getStringArray(R.array.gender_options)
+        ) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                // Ensure text is visible in both light and dark modes
+                if (view instanceof TextView) {
+                    ((TextView) view).setTextColor(
+                            getResources().getColor(android.R.color.system_neutral1_900, requireContext().getTheme())
+                    );
+                }
+                return view;
+            }
+
+            @Override
+            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                // Ensure dropdown text is visible in both light and dark modes
+                if (view instanceof TextView) {
+                    ((TextView) view).setTextColor(
+                            getResources().getColor(android.R.color.system_neutral1_900, requireContext().getTheme())
+                    );
+                }
+                return view;
+            }
+        };
+
+        adapter.setDropDownViewResource(R.layout.item_dropdown);
         genderAutoComplete.setAdapter(adapter);
     }
 
@@ -142,6 +172,7 @@ public class EditProfileFragment extends Fragment {
                     if (selectedImageUri != null) {
                         Picasso.get()
                                 .load(selectedImageUri)
+                                .placeholder(R.drawable.ic_placeholder_image)
                                 .error(R.drawable.ic_placeholder_image)
                                 .into(avatarImageView);
                     }
@@ -185,6 +216,7 @@ public class EditProfileFragment extends Fragment {
                     .addOnFailureListener(e -> {
                         Toast.makeText(getContext(), "Không thể tải ảnh lên: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         loadingProgressBar.setVisibility(View.GONE); // Ẩn loading nếu upload thất bại
+                        saveButton.setEnabled(true); // Re-enable the save button
                     });
         }
     }
@@ -199,17 +231,26 @@ public class EditProfileFragment extends Fragment {
                             "avatarUrl", avatarUrl)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(getContext(), "Thông tin đã được cập nhật", Toast.LENGTH_SHORT).show();
+                        loadingProgressBar.setVisibility(View.GONE);
                         navigateToProfileFragment();
                     })
-                    .addOnFailureListener(e -> Toast.makeText(getContext(), "Không thể cập nhật thông tin: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(getContext(), "Không thể cập nhật thông tin: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        loadingProgressBar.setVisibility(View.GONE);
+                        saveButton.setEnabled(true);
+                    });
         }
     }
 
     private void navigateToProfileFragment() {
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_frame, new ProfileFragment()) // Thay thế nội dung bằng ProfileFragment
-                .addToBackStack(null) // Thêm vào stack để hỗ trợ nút quay lại
+                .setCustomAnimations(
+                        R.anim.slide_in_left,
+                        R.anim.slide_out_right
+                )
+                .replace(R.id.content_frame, new ProfileFragment())
+                .addToBackStack(null)
                 .commit();
     }
 

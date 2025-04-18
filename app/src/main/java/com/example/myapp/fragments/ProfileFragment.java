@@ -9,11 +9,14 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,7 +33,6 @@ import com.google.android.gms.auth.api.identity.BeginSignInRequest;
 import com.google.android.gms.auth.api.identity.Identity;
 import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.appbar.AppBarLayout;
@@ -43,7 +45,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.appcompat.app.AlertDialog;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.Toast;
 
 public class ProfileFragment extends Fragment {
 
@@ -55,8 +56,10 @@ public class ProfileFragment extends Fragment {
     private AppBarLayout appBarLayout;
     private View rootView;
     private SignInClient signInClient;
-    private SwitchMaterial themeSwitch;
-    private MaterialButton themeToggleButton;
+    private ImageView themeToggleButton;
+    private MaterialButton darkModeButton;
+
+    private static final String TAG = "ProfileFragment";
 
     @Nullable
     @Override
@@ -99,8 +102,8 @@ public class ProfileFragment extends Fragment {
         vouchersCountView = rootView.findViewById(R.id.vouchers_count);
         statsCard = rootView.findViewById(R.id.stats_card);
         appBarLayout = rootView.findViewById(R.id.appBarLayout);
-        themeSwitch = rootView.findViewById(R.id.theme_switch);
-        themeToggleButton = rootView.findViewById(R.id.btn_theme_toggle);
+        themeToggleButton = rootView.findViewById(R.id.theme_toggle_button);
+        darkModeButton = rootView.findViewById(R.id.btn_dark_mode);
 
         // Prepare views for entry animations
         avatarImageView.setScaleX(0f);
@@ -176,51 +179,109 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setupThemeToggle() {
-        // Check the current night mode
-        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        boolean isDarkModeOn = currentNightMode == Configuration.UI_MODE_NIGHT_YES;
+        try {
+            // Initialize theme icons based on current state
+            updateThemeIcons();
 
-        // Set the initial state of the switch
-        themeSwitch.setChecked(isDarkModeOn);
+            // Set up the click listener for header button (without animation that could cause issues)
+            themeToggleButton.setOnClickListener(v -> {
+                Log.d(TAG, "Theme toggle button clicked");
+                toggleDarkMode();
+            });
 
-        // Set the button icon based on current theme
-        updateThemeButtonIcon(isDarkModeOn);
-
-        // Set up the switch listener
-        themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            toggleDarkMode(isChecked);
-        });
-
-        // Set up the button listener
-        themeToggleButton.setOnClickListener(v -> {
-            boolean newState = !themeSwitch.isChecked();
-            themeSwitch.setChecked(newState);
-            toggleDarkMode(newState);
-        });
-    }
-
-    private void toggleDarkMode(boolean enableDarkMode) {
-        // Save the preference
-        ThemeUtils.saveDarkModePreference(requireContext(), enableDarkMode);
-
-        // Update button icon
-        updateThemeButtonIcon(enableDarkMode);
-
-        // Apply the theme
-        if (enableDarkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            // Set up the click listener for list button
+            darkModeButton.setOnClickListener(v -> {
+                Log.d(TAG, "Dark mode button clicked");
+                // Simple scale animation without complex callbacks
+                v.animate()
+                        .scaleX(0.95f)
+                        .scaleY(0.95f)
+                        .setDuration(100)
+                        .withEndAction(() -> {
+                            v.animate()
+                                    .scaleX(1f)
+                                    .scaleY(1f)
+                                    .setDuration(100)
+                                    .start();
+                            toggleDarkMode();
+                        })
+                        .start();
+            });
+        } catch (Exception e) {
+            Log.e(TAG, "Error setting up theme toggle: " + e.getMessage());
+            e.printStackTrace();
         }
-
-        // No need to recreate the activity, AppCompatDelegate will handle it
     }
 
-    private void updateThemeButtonIcon(boolean isDarkMode) {
-        int iconId = isDarkMode ? R.drawable.ic_light_mode : R.drawable.ic_dark_mode;
-        String text = isDarkMode ? "Chế độ sáng" : "Chế độ tối";
-        themeToggleButton.setIcon(getResources().getDrawable(iconId, requireContext().getTheme()));
-        themeToggleButton.setText(text);
+    private void toggleDarkMode() {
+        try {
+            // Get current mode
+            boolean isDarkMode = ThemeUtils.isDarkModeActive(requireContext());
+
+            // Log the action
+            Log.d(TAG, "Toggling dark mode. Current mode: " + (isDarkMode ? "dark" : "light"));
+
+            // Show toast before toggling
+            Toast.makeText(requireContext(),
+                    isDarkMode ? "Đang chuyển sang chế độ sáng..." : "Đang chuyển sang chế độ tối...",
+                    Toast.LENGTH_SHORT).show();
+
+            // Toggle the theme
+            ThemeUtils.toggleDarkMode(requireContext());
+
+            // Don't try to update icons or animate here -
+            // the activity will be recreated and these views will no longer exist
+        } catch (Exception e) {
+            Log.e(TAG, "Error toggling dark mode: " + e.getMessage());
+            Toast.makeText(requireContext(), "Lỗi khi chuyển đổi chế độ", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void updateThemeIcons() {
+        try {
+            boolean isDarkMode = ThemeUtils.isDarkModeActive(requireContext());
+
+            // Set simple resources without complex drawable operations
+            themeToggleButton.setImageResource(isDarkMode ? R.drawable.ic_light_mode : R.drawable.ic_dark_mode);
+
+            // Update button text
+            darkModeButton.setText(isDarkMode ? "Chế độ sáng" : "Chế độ tối");
+
+            // Use setCompoundDrawablesWithIntrinsicBounds instead of setIcon for safer operation
+            darkModeButton.setIcon(getResources().getDrawable(
+                    isDarkMode ? R.drawable.ic_light_mode : R.drawable.ic_dark_mode,
+                    requireContext().getTheme()));
+        } catch (Exception e) {
+            Log.e(TAG, "Error updating theme icons: " + e.getMessage());
+        }
+    }
+
+    private void animateThemeButtonClick() {
+        ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(themeToggleButton, View.SCALE_X, 0.8f);
+        ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(themeToggleButton, View.SCALE_Y, 0.8f);
+        ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(themeToggleButton, View.SCALE_X, 1f);
+        ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(themeToggleButton, View.SCALE_Y, 1f);
+        ObjectAnimator rotate = ObjectAnimator.ofFloat(themeToggleButton, View.ROTATION, 0f, 180f);
+
+        AnimatorSet scaleDown = new AnimatorSet();
+        scaleDown.playTogether(scaleDownX, scaleDownY);
+        scaleDown.setDuration(100);
+
+        AnimatorSet scaleUp = new AnimatorSet();
+        scaleUp.playTogether(scaleUpX, scaleUpY, rotate);
+        scaleUp.setDuration(300);
+        scaleUp.setInterpolator(new OvershootInterpolator());
+
+        scaleDown.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                // Update icon before starting scale up animation
+                updateThemeIcons();
+                scaleUp.start();
+            }
+        });
+
+        scaleDown.start();
     }
 
     private void setupClickListeners() {
@@ -329,8 +390,8 @@ public class ProfileFragment extends Fragment {
                 rootView.findViewById(R.id.btn_order_history),
                 rootView.findViewById(R.id.btn_vouchers),
                 rootView.findViewById(R.id.btn_favorite),
-                rootView.findViewById(R.id.btn_theme_toggle),
                 rootView.findViewById(R.id.btn_about_us),
+                rootView.findViewById(R.id.btn_dark_mode), // Add the dark mode button to animation
                 rootView.findViewById(R.id.btn_logout)
         };
 
@@ -393,7 +454,6 @@ public class ProfileFragment extends Fragment {
 
         dialog.show();
     }
-
     private void navigateToLogin() {
         Intent intent = new Intent(getContext(), LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -418,6 +478,11 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        // Update theme icons when returning to fragment
+        if (themeToggleButton != null && darkModeButton != null) {
+            updateThemeIcons();
+        }
+
         if (profileViewModel.getUserData().getValue() == null) {
             profileViewModel.refreshUserData();
         }

@@ -4,25 +4,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.LayoutInflater;
+
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageButton;
+
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapp.R;
-import com.example.myapp.adapters.ChatAdapter;
-import com.example.myapp.data.ChatMessage;
 import com.example.myapp.data.Order;
 import com.example.myapp.data.User;
 import com.example.myapp.fragments.AdminFragment;
@@ -31,29 +24,20 @@ import com.example.myapp.fragments.HomeFragment;
 import com.example.myapp.fragments.OrderSuccessFragment;
 import com.example.myapp.fragments.ProfileFragment;
 import com.example.myapp.fragments.SearchFragment;
-import com.example.myapp.helpers.SmartChatBotHelper;
 import com.example.myapp.helpers.VNPayHelper;
+import com.example.myapp.utils.ThemeUtils;
 import com.example.myapp.viewmodel.ProfileViewModel;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.identity.Identity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private ProfileViewModel profileViewModel;
     private BottomNavigationView bottomNavigationView;
-    //private FloatingActionButton fabChat;
-    //private AlertDialog chatDialog;
-    //private List<ChatMessage> chatMessages;
-    //private ChatAdapter chatAdapter;
     private SharedPreferences sharedPreferences;
     private static final String PREF_NAME = "LoginPrefs";
     private static final String KEY_REMEMBER_LOGIN = "remember_login";
@@ -68,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(this::onNavigationItemSelected);
 
+        ThemeUtils.initTheme(this);
 
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment());
@@ -75,78 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
         observeUserRole();
-
-        //fabChat = findViewById(R.id.fab_chat);
-        //fabChat.setOnClickListener(v -> showChatDialog());
-        //chatMessages = new ArrayList<>();
     }
-
-//    private void showChatDialog() {
-//        // Tạo bottom sheet dialog với style tròn góc
-//        BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.BottomSheetDialogTheme);
-//        View chatView = LayoutInflater.from(this).inflate(R.layout.dialog_chat, null);
-//        dialog.setContentView(chatView);
-//
-//        // Setup views
-//        RecyclerView recyclerChat = chatView.findViewById(R.id.recycler_chat);
-//        EditText editMessage = chatView.findViewById(R.id.edit_message);
-//        MaterialButton buttonSend = chatView.findViewById(R.id.button_send);
-//        ImageButton btnClose = chatView.findViewById(R.id.btn_close);
-//
-//        // Setup RecyclerView
-//        recyclerChat.setLayoutManager(new LinearLayoutManager(this));
-//        chatAdapter = new ChatAdapter(chatMessages);
-//        recyclerChat.setAdapter(chatAdapter);
-//
-//        // Add welcome message if chat is empty
-//        if (chatMessages.isEmpty()) {
-//            chatMessages.add(new ChatMessage("Xin chào! Tôi có thể giúp gì cho bạn?", ChatMessage.TYPE_BOT));
-//            chatAdapter.notifyItemInserted(0);
-//        }
-//
-//        // Handle send message
-//        buttonSend.setOnClickListener(v -> {
-//            String message = editMessage.getText().toString().trim();
-//            if (!message.isEmpty()) {
-//                // Add user message
-//                chatMessages.add(new ChatMessage(message, ChatMessage.TYPE_USER));
-//                chatAdapter.notifyItemInserted(chatMessages.size() - 1);
-//                recyclerChat.scrollToPosition(chatMessages.size() - 1);
-//                editMessage.setText("");
-//
-//                // Bot response
-//                new Handler().postDelayed(() -> {
-//                    String botResponse = SmartChatBotHelper.analyzeContext(chatMessages, message);
-//                    chatMessages.add(new ChatMessage(botResponse, ChatMessage.TYPE_BOT));
-//                    chatAdapter.notifyItemInserted(chatMessages.size() - 1);
-//                    recyclerChat.scrollToPosition(chatMessages.size() - 1);
-//                }, 1000);
-//            }
-//        });
-//
-//        btnClose.setOnClickListener(v -> dialog.dismiss());
-//
-//        dialog.show();
-//    }
-
-//    private void simulateBotResponse(String userMessage) {
-//        new Handler().postDelayed(() -> {
-//            // Phân tích ngữ cảnh dựa trên các tin nhắn trước
-//            String botResponse = SmartChatBotHelper.analyzeContext(chatMessages, userMessage);
-//
-//            // Thêm tin nhắn vào danh sách
-//            chatMessages.add(new ChatMessage(botResponse, ChatMessage.TYPE_BOT));
-//            chatAdapter.notifyItemInserted(chatMessages.size() - 1);
-//
-//            // Cuộn xuống tin nhắn mới nhất
-//            if (chatDialog != null && chatDialog.isShowing()) {
-//                RecyclerView recyclerChat = chatDialog.findViewById(R.id.recycler_chat);
-//                if (recyclerChat != null) {
-//                    recyclerChat.scrollToPosition(chatMessages.size() - 1);
-//                }
-//            }
-//        }, 1000);
-//    }
 
     private void observeUserRole() {
         // Tải dữ liệu người dùng từ Firestore ngay khi mở ứng dụng

@@ -1,22 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Shadow Layer -->
-    <item>
-        <shape android:shape="rectangle">
-            <solid android:color="#20000000"/>
-            <corners
-                android:topLeftRadius="16dp"
-                android:topRightRadius="16dp"/>
-        </shape>
-    </item>
-
-    <!-- Background Layer -->
-    <item android:top="1dp">
-        <shape android:shape="rectangle">
-            <solid android:color="@color/white"/>
-            <corners
-                android:topLeftRadius="16dp"
-                android:topRightRadius="16dp"/>
-        </shape>
-    </item>
-</layer-list>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="?attr/colorSurface" />
+    <corners
+        android:topLeftRadius="16dp"
+        android:topRightRadius="16dp" />
+    <stroke
+        android:width="0.5dp"
+        android:color="?attr/colorControlHighlight" />
+</shape>

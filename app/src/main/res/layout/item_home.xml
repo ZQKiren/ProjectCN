@@ -10,7 +10,8 @@
     app:strokeWidth="0dp"
     android:clickable="true"
     android:focusable="true"
-    app:rippleColor="#2196F3">
+    app:cardBackgroundColor="?attr/colorSurface"
+    app:rippleColor="?attr/colorControlHighlight">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -78,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:textColor="#212121"
+                android:textColor="?android:attr/textColorPrimary"
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:layout_marginBottom="4dp"/>
@@ -96,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
-                    android:textColor="#757575"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:visibility="gone"
                     android:textStyle="italic"/>
 
@@ -107,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="#2196F3"/>
+                    android:textColor="?attr/colorPrimary"/>
             </LinearLayout>
         </LinearLayout>
 
